@@ -12,14 +12,9 @@ trait ValidateMethod{
                 self::$rules = [
                     'serial_number'   => 'required|size:9',
                     'pin'             => 'required|size:14',
-                    'partner_id'      => 'required|exists:partners,id',
-                    'passport_image'  => 'required',
-                    'passport_image1' => 'nullable',
-                    'passport_image2' => 'nullable',
-                    'phone'           => 'nullable',
-                    'work_phone'      => 'nullable',
-                    'work_place'      => 'nullable',
-                    'work_title'      => 'nullable'
+                    'person_photo'    => 'required',
+                    'birth_date'      => 'nullable',
+                    'partner_id'      => 'required|exists:api_users,id'
                 ];
                 break;
             case 'passportInfo':

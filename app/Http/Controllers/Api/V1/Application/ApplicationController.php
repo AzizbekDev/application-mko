@@ -20,7 +20,6 @@ class ApplicationController extends Controller
     }
 
     public function getPersonalInfo(Request $request){
-        dd($request->all());
         // Validate Request with @ValidateMethod trait
         $validator = $this->validate_method($request, __FUNCTION__);
         if ($validator->fails()) return $this->responseError('10422', $validator->messages());

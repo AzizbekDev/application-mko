@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Api\V1\Application;
 
+use App\Services\Conveyor\IdentifyPerson;
 use Illuminate\Http\Request;
 use App\Http\Traits\ValidateMethod;
 use App\Traits\Applications\CheckApp;
-use App\Traits\Applications\UploadImage;
 use App\Models\Application as ApplicationModel;
-use App\Traits\Unired\UniPersonIdentifier;
 use App\Http\Controllers\Controller;
 
 class ClientInfoController extends Controller
 {
-    use ValidateMethod, CheckApp, UploadImage, UniPersonIdentifier;
+    use ValidateMethod, CheckApp, IdentifyPerson;
+
     private $application;
 
     public function __construct(ApplicationModel $model)
@@ -20,34 +20,28 @@ class ClientInfoController extends Controller
         $this->application = $model;
     }
 
-    /***
-     * @desc Online Application API for client_info
-     * @param Request $request
-     * @return mixed
-     */
     public function clientInfo(Request $request){
-
         // Validate Request with @ValidateMethod trait
         $validator = $this->validate_method($request, __FUNCTION__);
         if ($validator->fails()) return $this->responseError('10422', $validator->messages());
 
         // Check application
         $inspections = $this->checkApplication($request);
-        if($inspections && $inspections->status) return $this->responseError($inspections->code, $inspections->message);
-
-        // Upload images return (array) valid data of request with generated new image name
-        $valid_data = $this->uploadImage($request);
+        if(!empty($inspections)) return $this->responseError($inspections->code, $inspections->message);
+        $valid_data = $request->all();
 
         // Application's validated data update or create
         $app_info = $this->application->updateOrCreateApp($valid_data);
-
-        // Step/StatusID - 0(New application), StatusID - 1(Passport info not found)
+        if($app_info){
+            $app_info->applicationInfo()->update([
+               'person_photo' => $valid_data['person_photo']
+            ]);
+        }
+        // Step/StatusID - 0(New application), StatusID - 1(Passport in.fo not found)
         if($app_info->step == 0 && $app_info->status_id <= 1){
-
             // Get passport info from UniIdentifyPerson trait
             $responseData = $this->identifyPerson($valid_data);
             if(is_object($responseData) && $responseData instanceof \Illuminate\Http\JsonResponse){
-
                 $personInfo = $responseData->getData();
                 // Check Person Response Status 1-success
                 if($personInfo->status == 1 && property_exists($personInfo,'result') && !empty($personInfo->result)){

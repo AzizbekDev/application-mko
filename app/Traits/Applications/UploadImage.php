@@ -5,34 +5,6 @@ use Illuminate\Http\Request;
 
 trait UploadImage
 {
-    public function uploadImage(Request $request){
-        $result = [
-            'passport_image'   => 'no-image.jpg',
-            'passport_image1'  => 'no-image.jpg',
-            'passport_image2'  => 'no-image.jpg',
-        ];
-
-        if ($request->has('passport_image')) {
-            $data = $this->upload($request->passport_image);
-            if($data['success']){
-                $result['passport_image'] = $data['name'];
-            }
-        }
-        if ($request->has('passport_image1')) {
-            $data = $this->upload($request->passport_image1);
-            if($data['success']){
-                $result['passport_image1'] = $data['name'];
-            }
-        }
-        if ($request->has('passport_image2')) {
-            $data = $this->upload($request->passport_image2);
-            if($data['success']){
-                $result['passport_image2'] = $data['name'];
-            }
-        }
-        return $request->merge($result)->all();
-    }
-
     public function upload($img_info){
 
         if (preg_match('/^data:image\/(\w+);base64,/', $img_info, $type)) {
@@ -49,8 +21,8 @@ trait UploadImage
             if ($image === false)
                 return [
                     'success' => false,
-                    'message' => 'Base64 decode failed.',
-                    'name'    => null
+                    'name'    => 'no-image.jpg',
+                    'message' => 'Base64 decode failed.'
                 ];
 
             $image_name = time()."-".uniqid().".".$type;
@@ -61,14 +33,15 @@ trait UploadImage
                 file_put_contents(public_path('uploads/passport_images/').$image_name, $image);
 
             return [
-                 'success' => true,
-                 'name' => $image_name
-             ];
+                'success' => true,
+                'name'    => $image_name,
+                'message' => 'Uploaded success'
+            ];
         } else {
             return [
                 'success' => false,
-                'message' => 'Did not match data URI with image data.',
-                'name'    => null
+                'name'    => 'no-image.jpg',
+                'message' => 'Did not match data URI with image data.'
             ];
         }
     }

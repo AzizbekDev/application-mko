@@ -1,7 +1,7 @@
 <?php
-Route::get('/brands', function () {
-    $brands = \App\Models\Brand::all();
-    dd($brands);
+use Carbon\Carbon;
+Route::get('/test', function () {
+    dd((new App\Services\MyIdService())->getAccessToken());
 });
 Route::redirect('/', '/login');
 Route::get('/home', function () {

@@ -42,14 +42,12 @@ class RestAuthenticate
             $user = ApiUser::active()
                 ->where([['login', '=', $login], ['password', '=', $password]])
                 ->first();
-
             if (!$user) {
                 return $this->responseError('-1012','Your account is not active or blocked!');
             }
             $user_id = $user->id;
 
             $request->merge(['user_id' => $user_id]);
-
         } else {
             return $this->responseError('-1011','Authorization in header is required!');
         }

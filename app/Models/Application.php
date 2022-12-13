@@ -2,41 +2,44 @@
 
 namespace App\Models;
 
-use http\Client;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 
 class Application extends Model
 {
-    protected $table = 'applications';
+    protected $table    = 'applications';
+    protected $statuses = [
+        'New Application',
+        'Identification Error',
+        'Identified Success',
+        'Card Scoring Error',
+        'Card Scoring Success',
+        'Salary Scoring Error',
+        'Salary Scoring Success',
+        'Credit Scoring Error',
+        'Credit Scoring Success',
+        'Confirmation Limit',
+        'Rejected Limit',
+        'Client Opened',
+        'Client Rejected'
+    ];
 
     protected $fillable = [
         'key_app',
         'serial_number',
         'pin',
-        'card_pan',
+        'card_mask',
         'phone',
-        'passport_image',
-        'passport_image1',
-        'passport_image2',
         'step',
         'partner_id',
-        'partner_groups',
         'status_id',
         'status_message',
+        'is_identified',
         'is_test'
     ];
 
-    public static function boot() {
-        parent::boot();
-        static::created(function ($app) {
-            $app->key_app = uniqid($app->id);
-            $app->save();
-        });
-    }
-    
     // Application Update Create Custom function
-    public static function updateOrCreateApp($data){
+    public static function updateOrCreateApp($data)
+    {
         $keys = [
             'serial_number' => $data['serial_number'],
             'pin'           => $data['pin']
@@ -54,12 +57,15 @@ class Application extends Model
     {
         return $query->where('status_id', '=', $status_id);
     }
-    public function scopeCheckPassportSerial($query, $serial_number){
+
+    public function scopeCheckPassportSerial($query, $serial_number)
+    {
         return $query->where('serial_number',$serial_number);
     }
 
     // Single Scopes
-    public function scopeGetPersonalInfoByKeyApp($query, $data){
+    public function scopeGetPersonalInfoByKeyApp($query, $data)
+    {
         return $query->whereKeyApp($data['key_app'])->with('personal_info')->first();
     }
 
@@ -69,7 +75,12 @@ class Application extends Model
         return $this->hasOne(Client::class);
     }
 
-    public function personal_info()
+    public function applicationInfo()
+    {
+        return $this->hasOne(ApplicationInfo::class);
+    }
+
+    public function personalInfo()
     {
         return $this->hasOne(PersonalInfo::class, 'pin', 'pin');
     }

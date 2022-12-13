@@ -20,14 +20,14 @@ class CreateApplicationsTable extends Migration
             $table->string('pin',14)->nullable();
             $table->string('card_mask',16)->nullable();
             $table->string('phone',15)->nullable();
-            $table->integer('step')->default(0)->comment(
+            $table->tinyInteger('step')->default(0)->comment(
                 "0-New Application," .
                 "1-MyID Identification," .
                 "2-Card/Salary/Credit Scoring," .
                 "3-Limit Confirmation," .
                 "4-Success Application,");
             $table->unsignedInteger('partner_id')->nullable();
-            $table->unsignedInteger('status_id')->default(0)
+            $table->tinyInteger('status_id')->default(0)
                 ->comment(
                     "0-New Application," .
                     "1-Identification Error," .
@@ -43,6 +43,7 @@ class CreateApplicationsTable extends Migration
                     "11-Client Opened," .
                     "12-Client Rejected");
             $table->string('status_message')->default("New Application");
+            $table->boolean('is_identified')->default(0)->comment('0-Not Identified, 1-Identified');
             $table->boolean('is_test')->default(0);
             $table->timestamps();
             $table->softDeletes();

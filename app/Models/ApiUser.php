@@ -15,4 +15,9 @@ class ApiUser extends Model
         'is_active',
         'token_expires_at'
     ];
+
+    public function scopeActive()
+    {
+        return $this->where('is_active', true);
+    }
 }
