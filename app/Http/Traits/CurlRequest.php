@@ -7,7 +7,6 @@ trait CurlRequest{
     {
         ini_set('memory_limit', '-1');
         $curl = curl_init();
-        
         curl_setopt($curl, CURLOPT_URL,$url);
         curl_setopt($curl, CURLOPT_TIMEOUT, 24);
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 4);
@@ -25,7 +24,6 @@ trait CurlRequest{
         $result        = curl_exec($curl);
         $code          = curl_getinfo($curl,CURLINFO_HTTP_CODE);
         $response_time = round(curl_getinfo($curl,CURLINFO_TOTAL_TIME) * 100);
-
         if (curl_errno($curl)) {
             $error = [
                 'status' => false,
@@ -35,15 +33,14 @@ trait CurlRequest{
                 'http_code'     => $code,
                 'response_time' => $response_time
             ];
+            curl_close($curl);
+            return $error;
         }
         curl_close($curl);
-
-        if(empty($result)) return $error;
-
         $response = json_decode($result,true);
-
-        if ($return_curl_info) $response = array_merge($response,['http_code' => $code,'response_time' => $response_time ]);
-
+        if ($return_curl_info){
+            $response = array_merge($response,['http_code' => $code,'response_time' => $response_time ]);
+        }
         return $response;
     }
 

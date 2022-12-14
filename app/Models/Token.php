@@ -21,6 +21,18 @@ class Token extends Model
         return self::whereName($name)->active()->orderBy('id', 'DESC')->first();
     }
 
+    public static function createNew($name, $data){
+
+        self::where(['name' => $name])
+            ->update(['active' => false]);
+
+        return self::create(
+            array_merge([
+                'name'             => $name,
+                'token_expires_at' => Carbon::now()->addSeconds($data['expires_in'])
+            ],$data));
+    }
+
     public function scopeActive(){
         return $this->where('active', true);
     }

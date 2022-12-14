@@ -20,6 +20,7 @@ class CreateMyIdInfosTable extends Migration
             $table->string('pinfl',14)->nullable();
             $table->boolean('is_mobile')->default(false);
             $table->string('response_id')->nullable();
+            $table->string('job_id')->nullable();
             $table->string('comparison_value')->nullable()->comment('Comparison result (0.5-1.0 success)');
             $table->integer('result_code')->nullable()->comment('
                 1-All checks passed successfully,
@@ -31,7 +32,7 @@ class CreateMyIdInfosTable extends Migration
                 7-Photo from GSP not received.
             ');
             $table->string('result_note')->nullable();
-            $table->text('profile')->nullable();
+            $table->mediumText('profile')->nullable();
             $table->timestamps();
             $table->index(['pass_data','pinfl']);
         });

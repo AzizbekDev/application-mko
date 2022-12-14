@@ -30,27 +30,52 @@ class SettingsTableSeeder extends Seeder
                 'id'             => 2,
                 'name'           => 'tax',
                 'description'    => 'Tax service settings',
-                'value'          => '',
+                'value'          => json_encode([
+                    'url'           => 'url',
+                    'username'      => 'username',
+                    'password'      => 'password'
+                ])
             ],
             [
                 'id'             => 3,
-                'name'           => 'sms',
+                'name'           => 'sms_gateway',
                 'description'    => 'SMS service settings',
-                'value'          => '',
+                'value'          => json_encode([
+                    'url'           => 'url',
+                    'username'      => 'username',
+                    'password'      => 'password'
+                ])
             ],
             [
                 'id'             => 4,
-                'name'           => 'uzcard',
-                'description'    => 'Uzcard service settings',
-                'value'          => '',
+                'name'           => 'katm',
+                'description'    => 'KATM service settings',
+                'value'          => json_encode([
+                    'url'           => 'url',
+                    'username'      => 'username',
+                    'password'      => 'password'
+                ])
             ],
             [
                 'id'             => 5,
-                'name'           => 'humo',
-                'description'    => 'Humo service settings',
-                'value'          => '',
+                'name'           => 'card_scoring',
+                'description'    => 'Card Scoring HUMO/UZCARD service settings',
+                'value'          => json_encode([
+                    'url'           => 'url',
+                    'username'      => 'username',
+                    'password'      => 'password'
+                ])
+            ],
+            [
+                'id'             => 6,
+                'name'           => 'card_info',
+                'description'    => 'Card Info HUMO/UZCARD service settings',
+                'value'          => json_encode([
+                    'url'           => 'url',
+                    'username'      => 'username',
+                    'password'      => 'password'
+                ])
             ]
-
         ];
         Setting::insert($settings);
     }

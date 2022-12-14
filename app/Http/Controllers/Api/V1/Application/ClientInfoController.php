@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api\V1\Application;
 
-use App\Services\Conveyor\IdentifyPerson;
 use Illuminate\Http\Request;
 use App\Http\Traits\ValidateMethod;
 use App\Traits\Applications\CheckApp;
+use App\Traits\Personal\MyIdInfo;
 use App\Models\Application as ApplicationModel;
 use App\Http\Controllers\Controller;
 
 class ClientInfoController extends Controller
 {
-    use ValidateMethod, CheckApp, IdentifyPerson;
+    use ValidateMethod, CheckApp, MyIdInfo;
 
     private $application;
 
@@ -25,7 +25,7 @@ class ClientInfoController extends Controller
         $validator = $this->validate_method($request, __FUNCTION__);
         if ($validator->fails()) return $this->responseError('10422', $validator->messages());
 
-        // Check application
+        // Check application with @CheckApp trait
         $inspections = $this->checkApplication($request);
         if(!empty($inspections)) return $this->responseError($inspections->code, $inspections->message);
         $valid_data = $request->all();
@@ -37,32 +37,33 @@ class ClientInfoController extends Controller
                'person_photo' => $valid_data['person_photo']
             ]);
         }
-        // Step/StatusID - 0(New application), StatusID - 1(Passport in.fo not found)
-        if($app_info->step == 0 && $app_info->status_id <= 1){
-            // Get passport info from UniIdentifyPerson trait
-            $responseData = $this->identifyPerson($valid_data);
-            if(is_object($responseData) && $responseData instanceof \Illuminate\Http\JsonResponse){
-                $personInfo = $responseData->getData();
-                // Check Person Response Status 1-success
-                if($personInfo->status == 1 && property_exists($personInfo,'result') && !empty($personInfo->result)){
-                    return $this->responseSuccess($personInfo->result->code, $personInfo->result->message,[
-                        'passport_info' => ($personInfo->status) ? true : false,
-                        'key_app'       => $app_info->key_app
-                    ]);
-
-                // Check Person Response Status 0-error
-                }elseif($personInfo->status == 0 && property_exists( $personInfo,'error') && !empty($personInfo->error)){
-                    return $this->responseError($personInfo->error->code, $personInfo->error->message,[
-                        'passport_info' => ($personInfo->status) ? true : false,
-                        'key_app'       => $app_info->key_app
-                    ]);
-                }
-            }
+        // AppIdentified - false(Not Identified)
+        if($app_info->is_identified == false){
+            // Identify Person with @MyIdInfo trait
+            $responseData = $this->identifyPerson($app_info->applicationInfo->toArray());
+            dd($responseData);
+//            if(is_object($responseData) && $responseData instanceof \Illuminate\Http\JsonResponse){
+//                $personInfo = $responseData->getData();
+//                // Check Person Response Status 1-success
+//                if($personInfo->status == 1 && property_exists($personInfo,'result') && !empty($personInfo->result)){
+//                    return $this->responseSuccess($personInfo->result->code, $personInfo->result->message,[
+//                        'passport_info' => ($personInfo->status) ? true : false,
+//                        'key_app'       => $app_info->key_app
+//                    ]);
+//
+//                // Check Person Response Status 0-error
+//                }elseif($personInfo->status == 0 && property_exists( $personInfo,'error') && !empty($personInfo->error)){
+//                    return $this->responseError($personInfo->error->code, $personInfo->error->message,[
+//                        'passport_info' => ($personInfo->status) ? true : false,
+//                        'key_app'       => $app_info->key_app
+//                    ]);
+//                }
+//            }
         }
         // PersonInfo exists returns a successful response
-        return $this->responseSuccess('10100','Passport ma\'lumotlari tasdiqlangan.',[
-            'passport_info' => true,
-            'key_app'       => $app_info->key_app
+        return $this->responseSuccess('10100','Ushbu mijoz identifikatsiyadan o\'tgan.',[
+            'app_is_identified' => $app_info->is_identified,
+            'key_app'           => $app_info->key_app
         ]);
     }
 }

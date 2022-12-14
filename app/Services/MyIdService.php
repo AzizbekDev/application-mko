@@ -2,11 +2,13 @@
 namespace App\Services;
 
 use App\Http\Traits\CurlRequest;
+use App\Traits\Logger;
 use App\Models\Token;
+use Carbon\Carbon;
 
 class MyIdService
 {
-    use CurlRequest;
+    use CurlRequest, Logger;
     private $base_url;
     private $token;
     private $settings;
@@ -15,8 +17,22 @@ class MyIdService
     {
         $this->settings = json_decode(get_settings_value_by_name('myid'), true);
         $this->base_url = $this->settings['url'];
-        $this->token    = Token::getToken('myid');
-        dd($this->token);
+        $this->token    = $this->activeToken();
+    }
+
+    public function activeToken(){
+        $token = Token::getToken('myid');
+        if(!empty($token)){
+            $endDate = Carbon::parse($token->token_expires_at);
+            if($endDate->greaterThanOrEqualTo(Carbon::now())){
+                return $token->access_token;
+            }
+        }
+        $data = $this->getAccessToken();
+        if($data && is_array($data) && array_key_exists('access_token', $data)){
+            Token::createNew('myid', $data);
+            return $data['access_token'];
+        }
     }
 
     public function getAccessToken(){
@@ -29,13 +45,13 @@ class MyIdService
             'password'   => $this->settings['password'],
             'client_id'  => $this->settings['client_id']
         ];
-        $response = $this->post(
+        $responseData = $this->post(
             $this->base_url.'/api/v1/oauth2/access-token',
             http_build_query($params),
             $headers,
             true
         );
-        return $response;
+        return $responseData;
     }
 
     public function getJobId($passData, $birthDate, $personPhoto){
@@ -45,36 +61,32 @@ class MyIdService
         ];
         $params  = json_encode([
             'pass_data'         => $passData,
-            'birth_date'        => $birthDate,
+            'birth_date'        => Carbon::parse($birthDate)->format('Y-m-d'),
             'agreed_on_terms'   => true,
             'client_id'         => $this->settings['client_id'],
             'photo_from_camera' => [
                 'front'         => $personPhoto
             ]
         ]);
-        $response = $this->post(
+        $responseData = $this->post(
             $this->base_url.'/api/v1/authentication/simple-inplace-authentication-request-task',
             $params,
             $headers
         );
-        return $response;
+//        if(!is_null($responseData)) $this->logger($responseData,'myid');
+        return $responseData;
     }
 
     public function getPassportInfo($job_id){
         $headers = [
-            'Content-Type: application/json',
             'Authorization: Bearer '.$this->token
         ];
-
-        $params = [
-          'job_id' => $job_id
-        ];
-
-        $response = $this->post(
-            $this->base_url.'/api/v1/authentication/simple-inplace-authentication-request-status',
-            http_build_query($params),
+        $responseData = $this->post(
+            $this->base_url.'/api/v1/authentication/simple-inplace-authentication-request-status?job_id='.$job_id,
+            [],
             $headers
         );
-        return $response;
+        if(!is_null($responseData) || !empty($responseData)) $this->logger($responseData,'myid');
+        return $responseData;
     }
 }

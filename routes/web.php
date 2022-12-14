@@ -1,7 +1,11 @@
 <?php
 use Carbon\Carbon;
-Route::get('/test', function () {
-    dd((new App\Services\MyIdService())->getAccessToken());
+Route::get('/test-myid', function () {
+    dd(Carbon::parse('01.02.1993')->format('Y-m-d'));
+//    dd((new App\Services\MyIdService())->getPassportInfo('7c41c6cb-2187-4760-b380-c34f9f24b4d2'));
+});
+Route::get('/test-katm', function () {
+    dd((new App\Services\Katm\KatmService())->credit_report());
 });
 Route::redirect('/', '/login');
 Route::get('/home', function () {

@@ -105,34 +105,6 @@ return [
             'path' => storage_path('logs/request_response_errors.log'),
             'level' => 'debug',
         ],
-
-        'digidlogger' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/request_response_digid.log'),
-            'level' => 'info',
-        ],
-
-        'smslogger' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/request_sms.log'),
-            'level' => 'info',
-        ],
-        'paymentlogger' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/request_payment.log'),
-            'level' => 'info',
-        ],
-
-        'paymologger' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/request_response_paymo.log'),
-            'level' => 'info',
-        ],
-        'unisoftlogger' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/request_response_unisoft.log'),
-            'level' => 'info',
-        ],
     ],
 
 ];
