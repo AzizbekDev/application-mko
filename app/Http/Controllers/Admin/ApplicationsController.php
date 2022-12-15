@@ -8,39 +8,55 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\Controller;
 use App\Models\BlockedApplications;
 use App\Models\Application;
+use App\Models\Client;
 
 class ApplicationsController extends Controller
 {
-    public function index(Request $request, $type)
+    public function index(Request $request)
     {
-        $method = get_method_name($type);
-
-        abort_if(Gate::denies($method.'_application_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        method_exists($this, $method) ? $this->$method($request) : abort(404);
-    }
-
-    public function all(Request $request){
+        abort_if(Gate::denies('all_application_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('admin.applications.index');
     }
 
     public function new(Request $request){
-        return view('admin.applications.new');
+        abort_if(Gate::denies('new_application_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $applications = Client::with([
+            'application',
+            'application.applicationInfo',
+            'application.partnerInfo'])->statusApp(0)->get();
+        return view('admin.applications.new', compact('applications'));
     }
     public function viewed(Request $request){
-        return view('admin.applications.viewed');
+        abort_if(Gate::denies('viewed_application_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $applications = Client::statusApp(1)->get();
+
+        return view('admin.applications.viewed', compact('applications'));
     }
 
     public function approved(Request $request){
-        return view('admin.applications.approved');
+
+        abort_if(Gate::denies('approved_application_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $applications = Client::statusApp(2)->get();
+
+        return view('admin.applications.approved', compact('applications'));
     }
 
     public function rejected(Request $request){
-        return view('admin.applications.rejected');
+        abort_if(Gate::denies('rejected_application_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $applications = Client::statusApp(3)->get();
+
+        return view('admin.applications.rejected', compact('applications'));
     }
 
     public function blocked(Request $request){
+        abort_if(Gate::denies('blocked_application_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $applications = BlockedApplications::all();
-        return view('admin.applications.bocked', compact('applications'));
+
+        return view('admin.applications.blocked', compact('applications'));
     }
 }

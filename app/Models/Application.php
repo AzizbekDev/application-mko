@@ -80,6 +80,10 @@ class Application extends Model
         return $this->hasOne(ApplicationInfo::class);
     }
 
+    public function partnerInfo(){
+        return $this->hasOne(ApiUser::class, 'id', 'partner_id');
+    }
+
     public function personalInfo()
     {
         return $this->hasOne(PersonalInfo::class, 'pin', 'pin');

@@ -8,12 +8,12 @@ class Client extends Model
 {
     protected $fillable = [
         'application_id',
-        'bank_mfo',
+        'status_app_id',
         'client_code',
         'password',
         'lang',
-        'print',
         'date_pub',
+        'print',
         'status_id',
         'status_message'
     ];
@@ -21,5 +21,10 @@ class Client extends Model
     public function application()
     {
         return $this->belongsTo(Application::class);
+    }
+
+    public function scopeStatusApp($query, $status_id)
+    {
+        return $query->where('status_app_id', '=', $status_id);
     }
 }

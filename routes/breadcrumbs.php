@@ -110,6 +110,12 @@ Breadcrumbs::for('user_edit', function (BreadcrumbTrail $trail, $user) {
     $trail->parent('users');
     $trail->push($user->name, route('admin.users.edit', $user));
 });
+////////////////////////////////// Clients //////////////////////////////////
+// Dashboard > Clients
+Breadcrumbs::for('clients', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Clients', route('admin.clients.index'));
+});
 
 ////////////////////////////////// Applications //////////////////////////////////
 // Dashboard > Applications
@@ -121,31 +127,31 @@ Breadcrumbs::for('applications', function (BreadcrumbTrail $trail) {
 // Dashboard > Applications > New
 Breadcrumbs::for('application_new', function (BreadcrumbTrail $trail) {
     $trail->parent('applications');
-    $trail->push('New', route('admin.applications','new'));
+    $trail->push('New', route('admin.applications.new'));
 });
 
 // Dashboard > Applications > Viewed
 Breadcrumbs::for('application_viewed', function (BreadcrumbTrail $trail) {
     $trail->parent('applications');
-    $trail->push('Viewed', route('admin.applications', 'viewed'));
+    $trail->push('Viewed', route('admin.applications.viewed'));
 });
 
 // Dashboard > Applications > Approved
 Breadcrumbs::for('application_approved', function (BreadcrumbTrail $trail) {
     $trail->parent('applications');
-    $trail->push('Approved', route('admin.applications', 'approved'));
+    $trail->push('Approved', route('admin.applications.approved'));
 });
 
 // Dashboard > Applications > Rejected
 Breadcrumbs::for('application_rejected', function (BreadcrumbTrail $trail) {
     $trail->parent('applications');
-    $trail->push('Rejected', route('admin.applications', 'rejected'));
+    $trail->push('Rejected', route('admin.applications.rejected'));
 });
 
 // Dashboard > Applications > Blocked
 Breadcrumbs::for('application_blocked', function (BreadcrumbTrail $trail) {
     $trail->parent('applications');
-    $trail->push('Blocked', route('admin.applications', 'blocked'));
+    $trail->push('Blocked', route('admin.applications.blocked'));
 });
 
 ////////////////////////////////// Merchants //////////////////////////////////

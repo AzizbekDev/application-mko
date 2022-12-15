@@ -16,6 +16,13 @@ class CreateClientsTable extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('application_id')->nullable();
+            $table->integer('status_id')->default(0)->comment(
+               "0-New App, 
+                1-Viewed App, 
+                2-Approved App, 
+                3-Rejected App, 
+                4-Blocked App"
+            );
             $table->string('client_code',9)->nullable();
             $table->string('password',20)->nullable();
             $table->string('lang',2)->default('uz')->comment('');

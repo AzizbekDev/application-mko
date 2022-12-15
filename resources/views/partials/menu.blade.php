@@ -42,7 +42,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{route('admin.applications', 'new')}}" class="nav-link {{ request()->is("admin/applications/new") || request()->is("admin/applications/new/*") ? "active" : "" }}">
+                                <a href="{{route('admin.applications.new')}}" class="nav-link {{ request()->is("admin/applications/new") || request()->is("admin/applications/new/*") ? "active" : "" }}">
                                     <i class="fa-fw nav-icon fa fa-minus-square color-blue"></i>
                                     <p>
                                         {{ trans('cruds.applicationNew.title') }}
@@ -50,7 +50,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('admin.applications', 'viewed')}}" class="nav-link {{ request()->is("admin/applications/viewed") || request()->is("admin/applications/viewed/*") ? "active" : "" }}">
+                                <a href="{{route('admin.applications.viewed')}}" class="nav-link {{ request()->is("admin/applications/viewed") || request()->is("admin/applications/viewed/*") ? "active" : "" }}">
                                     <i class="fa-fw nav-icon fa fa-plus-square color-yellow"></i>
                                     <p>
                                         {{ trans('cruds.applicationViewed.title') }}
@@ -58,7 +58,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('admin.applications', 'approved')}}" class="nav-link {{ request()->is("admin/applications/approved") || request()->is("admin/applications/checked/*") ? "active" : "" }}">
+                                <a href="{{route('admin.applications.approved')}}" class="nav-link {{ request()->is("admin/applications/approved") || request()->is("admin/applications/checked/*") ? "active" : "" }}">
                                     <i class="fa-fw nav-icon fa fa-check-square color-green"></i>
                                     <p>
                                         {{ trans('cruds.applicationChecked.title') }}
@@ -66,7 +66,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('admin.applications', 'rejected')}}" class="nav-link {{ request()->is("admin/applications/rejected") || request()->is("admin/applications/checked/*") ? "active" : "" }}">
+                                <a href="{{route('admin.applications.rejected')}}" class="nav-link {{ request()->is("admin/applications/rejected") || request()->is("admin/applications/checked/*") ? "active" : "" }}">
                                     <i class="fa-fw nav-icon fa fa-window-close color-red"></i>
                                     <p>
                                         {{ trans('cruds.applicationRejected.title') }}
@@ -74,7 +74,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('admin.applications', 'blocked')}}" class="nav-link {{ request()->is("admin/applications/blocked") || request()->is("admin/applications/blocked/*") ? "active" : "" }}">
+                                <a href="{{route('admin.applications.blocked')}}" class="nav-link {{ request()->is("admin/applications/blocked") || request()->is("admin/applications/blocked/*") ? "active" : "" }}">
                                     <i class="fa-fw nav-icon fa fa fa-ban color-gray"></i>
                                     <p>
                                         {{ trans('cruds.applicationBlocked.title') }}

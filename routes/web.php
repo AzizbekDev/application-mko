@@ -46,7 +46,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     //Settings
     Route::resource('settings', 'SettingsController');
     // Applications
-    Route::get('applications/{type}', 'ApplicationsController@index')->name('applications');
+    Route::get('applications', 'ApplicationsController@index')->name('applications.index');
+    Route::get('applications/new', 'ApplicationsController@new')->name('applications.new');
+    Route::get('applications/viewed', 'ApplicationsController@viewed')->name('applications.viewed');
+    Route::get('applications/approved', 'ApplicationsController@approved')->name('applications.approved');
+    Route::get('applications/rejected', 'ApplicationsController@rejected')->name('applications.rejected');
+    Route::get('applications/blocked', 'ApplicationsController@blocked')->name('applications.blocked');
     // Clients
     Route::get('clients', 'ClientsController@index')->name('clients.index');
 });
