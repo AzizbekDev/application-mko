@@ -13,7 +13,8 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             RoleUserTableSeeder::class,
             SettingsTableSeeder::class,
-            ApiUserTableSeeder::class
+            ApiUserTableSeeder::class,
+            TokensTableSeeder::class
         ]);
     }
 }

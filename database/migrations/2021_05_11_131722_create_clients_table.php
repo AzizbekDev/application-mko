@@ -16,7 +16,7 @@ class CreateClientsTable extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('application_id')->nullable();
-            $table->integer('status_id')->default(0)->comment(
+            $table->integer('status_app_id')->default(0)->comment(
                "0-New App, 
                 1-Viewed App, 
                 2-Approved App, 

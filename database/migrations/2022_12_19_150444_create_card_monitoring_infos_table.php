@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTaxScoringInfosTable extends Migration
+class CreateCardMonitoringInfosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateTaxScoringInfosTable extends Migration
      */
     public function up()
     {
-        Schema::create('tax_scoring_infos', function (Blueprint $table) {
+        Schema::create('card_monitoring_infos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('tax_info_id')->nullable();
+            $table->unsignedInteger('salary_card_id')->nullable();
             $table->string('salary_average', 15)->nullable()->comment('tyin');
             $table->string('min_limit', 15)->nullable()->comment('tyin');
             $table->string('max_limit', 15)->nullable()->comment('tyin');
@@ -24,7 +24,7 @@ class CreateTaxScoringInfosTable extends Migration
             $table->string('status_message')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->index(['tax_info_id']);
+            $table->index(['salary_card_id']);
         });
     }
 
@@ -35,6 +35,6 @@ class CreateTaxScoringInfosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tax_scoring_infos');
+        Schema::dropIfExists('card_monitoring_infos');
     }
 }

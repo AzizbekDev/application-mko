@@ -18,6 +18,7 @@ class CreateSalaryCardsTable extends Migration
             $table->unsignedInteger('application_id')->nullable();
             $table->string('card_number', 16)->nullable();
             $table->string('expire', 4)->nullable();
+            $table->string('phone', 15)->nullable();
             $table->string('mask', 16)->nullable();
             $table->string('owner', 50)->nullable();
             $table->string('bank', 50)->nullable();
