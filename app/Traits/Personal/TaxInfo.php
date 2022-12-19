@@ -1,60 +1,56 @@
 <?php
 namespace App\Traits\Personal;
 
-use App\Models\PersonalInfo;
-use App\Services\Tax\TaxService;
-use App\Traits\Personal\CheckPerson;
-
+use App\Models\TaxInfo as TaxModel;
+use App\Models\TaxDetail;
+use App\Services\TaxService;
+use Illuminate\Support\Collection;
+use Carbon\Carbon;
 trait TaxInfo{
-    use CheckPerson;
-    static $statusSuccess = '2';
-    static $source = ["TaxInfo" => 3,"DigID" => 2, "GSP" => 1];
-    static $statusSuccessMessage = 'Success Info';
-
-    public function getTaxInfo($data){
-        $check_info = $this->checkPerson($data);
-        if($check_info){
-            return $this->responseSuccess('30110',
-                $check_info['status_message'] ?? 'No message',['personal_info' => $check_info]);
-        }else{
-            $tax_info = (new TaxService())->getPersonalInfo($data);
-            if($tax_info
-                && array_key_exists('success', $tax_info)
-                && array_key_exists('reason', $tax_info)
-                && array_key_exists('data', $tax_info)){
-                if($tax_info['success'] && $tax_info['data']){
-                    $this->updatePersonInfo($tax_info['data']);
-                    return $this->responseSuccess('30110', $tax_info['data']);
-                }else{
-                    return $this->responseSuccess('30113', $tax_info['reason']);
+    static $statusSuccess = 1;
+    public function getTaxSalaryInfo($data){
+        $response = (new TaxService())->getSalaryInfo($data);
+        if($response && array_key_exists('success', $response)){
+            if($response['success'] && !empty($response['data'])){
+                $taxModel = TaxModel::updateOrCreate([
+                    'tin'           => $response['data'][0]['tin'],
+                    'pinfl'         => $response['data'][0]['pinfl'],
+                    'serial_number' => $response['data'][0]['series_passport'].str_pad($response['data'][0]['number_passport'], 7, '0', STR_PAD_LEFT),
+                ],[
+                    'name'          => $response['data'][0]['name'],
+                    'ns10_code'     => $response['data'][0]['ns10_code'],
+                    'ns11_code'     => $response['data'][0]['ns11_code'],
+                    'last_year'     => (int)Carbon::now()->format('Y'),
+                    'last_period'   => (int)Carbon::now()->format('m'),
+                    'status_id'     => self::$statusSuccess
+                ]);
+                $details = new Collection();
+                foreach ($response['data'] as $data){
+                    $details->push([
+                        "company_name"   => $data['company_name'],
+                        "company_tin"    => $data['company_tin'],
+                        "year"           => $data['year'],
+                        "period"         => $data['period'],
+                        "salary"         => intval($data['salary']),
+                        "salary_tax_sum" => intval($data['salary_tax_sum']),
+                        "inps_sum"       => intval($data['inps_sum']),
+                        "prop_income"    => intval($data['prop_income']),
+                        "other_income"   => intval($data['other_income']),
+                    ]);
                 }
+                $average_salary = $details->groupBy('company_tin')->map(function ($company){
+                   return $company->slice(-6, 6)->avg('salary');
+                })->avg();
+                $taxModel->update(['average_salary' => intval($average_salary)]);
+                $taxModel->details()->delete();
+                $taxModel->details()->createMany($details->toArray());
             }
-            return $this->responseSuccess('30115', 'Service "Tax" is not working... :(');
+            return array_merge($response, ['average_salary' => $average_salary]);
         }
-    }
-
-    public function updatePersonInfo($dataTax){
-        $person_info = [
-            'serial_number'         => $dataTax['series_passport'].str_pad($dataTax['number_passport'],7, "0", STR_PAD_LEFT ),
-            'pin'                   => $dataTax['pinfl'],
-            'inn'                   => $dataTax['tin'],
-            'birth_date'            => date_format_store(extract_passport_birth_date($dataTax['pinfl'])),
-            'document_date'         => date_format_store($dataTax['issued_passport']),
-            'document_region'       => str_pad($dataTax['ns10_code'],2, "0", STR_PAD_LEFT ),
-            'document_district'     => str_pad($dataTax['ns11_code'],3, "0", STR_PAD_LEFT ),
-            'family_name'           => extract_full_name($dataTax['company_name'])['family_name'],
-            'name'                  => extract_full_name($dataTax['company_name'])['name'],
-            'patronymic'            => extract_full_name($dataTax['company_name'])['patronymic'],
-            'registration_region'   => str_pad($dataTax['ns10_code'],2, "0", STR_PAD_LEFT ),
-            'registration_district' => str_pad($dataTax['ns11_code'],3, "0", STR_PAD_LEFT ),
-            'registration_address'  => $dataTax['adress'],
-            'live_address'          => $dataTax['adress'],
-            'gender'                => extract_passport_gender($dataTax['pinfl']),
-            'status_id'             => self::$statusSuccess,
-            'status_message'        => self::$statusSuccessMessage,
-            'response_info'         => json_encode($dataTax),
-            'response_source'       => self::$source['TaxInfo'],
+        return [
+            "success" => false,
+            "reason"  => "Tax service not working...",
+            "data"    => null
         ];
-        return PersonalInfo::updateOrCreate(['serial_number' => $person_info['serial_number'], 'pin' => $person_info['pin']], $person_info);
     }
 }

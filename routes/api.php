@@ -17,3 +17,10 @@ Route::group([
     'middleware' => ['auth.partner']], function () {
     Route::post('rest', 'RestController@index');
 });
+
+// Tax Services
+Route::group([
+    'namespace'  => 'Api\V1\Unired',
+    'middleware' => ['auth.partner']], function () {
+    Route::post('tax', 'TaxController@index');
+});

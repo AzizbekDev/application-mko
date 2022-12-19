@@ -22,7 +22,7 @@ class CreateMyIdInfosTable extends Migration
             $table->string('response_id')->nullable();
             $table->string('job_id')->nullable();
             $table->string('comparison_value')->nullable()->comment('Comparison result (0.5-1.0 success)');
-            $table->integer('result_code')->nullable()->comment('
+            $table->mediumInteger('result_code')->nullable()->comment('
                 1-All checks passed successfully,
                 2-Passport data entered incorrectly,
                 3-Failed to confirm vitality,
@@ -32,9 +32,9 @@ class CreateMyIdInfosTable extends Migration
                 7-Photo from GSP not received.
             ');
             $table->string('result_note')->nullable();
-            $table->mediumText('profile')->nullable();
+            $table->text('profile')->nullable();
             $table->timestamps();
-            $table->index(['pass_data','pinfl']);
+            $table->index(['pass_data','pinfl','job_id']);
         });
     }
 

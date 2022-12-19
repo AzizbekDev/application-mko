@@ -117,6 +117,12 @@ Breadcrumbs::for('clients', function (BreadcrumbTrail $trail) {
     $trail->push('Clients', route('admin.clients.index'));
 });
 
+Breadcrumbs::for('client_info', function (BreadcrumbTrail $trail, $client) {
+    $trail->parent('clients');
+    $trail->push($client->id, route('admin.clients.show', $client));
+});
+
+
 ////////////////////////////////// Applications //////////////////////////////////
 // Dashboard > Applications
 Breadcrumbs::for('applications', function (BreadcrumbTrail $trail) {

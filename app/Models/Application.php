@@ -80,6 +80,10 @@ class Application extends Model
         return $this->hasOne(ApplicationInfo::class);
     }
 
+    public function salaryCards(){
+        return $this->hasMany(SalaryCard::class);
+    }
+
     public function partnerInfo(){
         return $this->hasOne(ApiUser::class, 'id', 'partner_id');
     }

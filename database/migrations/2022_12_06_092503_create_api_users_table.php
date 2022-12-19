@@ -24,6 +24,7 @@ class CreateApiUsersTable extends Migration
             $table->tinyInteger('is_active')->default(0);
             $table->timestamp('token_expires_at')->nullable();
             $table->timestamps();
+            $table->index(['login','password']);
         });
     }
 

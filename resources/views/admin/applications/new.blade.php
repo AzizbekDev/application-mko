@@ -157,7 +157,7 @@
                     </td>
                     <td class="text-center" style="vertical-align: middle">
                         <div class="btn-group">
-                            <a href="#" class="btn btn-outline-info btn-sm">Детали</a>
+                            <a href="{{ route('admin.clients.show', $application->id) }}" class="btn btn-outline-info btn-sm">Детали</a>
                         </div>
                     </td>
                 </tr>

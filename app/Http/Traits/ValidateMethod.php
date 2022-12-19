@@ -17,10 +17,13 @@ trait ValidateMethod{
                     'partner_id'      => 'required|exists:api_users,id'
                 ];
                 break;
-            case 'passportInfo':
+            case 'identifiedClientInfo':
                 self::$rules = [
-                    'key_app'         => 'required|exists:applications,key_app',
-                    'serial_number'   => 'required|size:9'
+                    'profile'             => 'required',
+                    'profile.common_data' => 'required',
+                    'profile.doc_data'    => 'required',
+                    'profile.address'     => 'required',
+                    'person_photo'        => 'nullable'
                 ];
                 break;
             case 'cardInfo':

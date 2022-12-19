@@ -13,18 +13,20 @@ trait CheckApp{
         if($request->has('serial_number')){
             if(Application::where('serial_number', $request->serial_number)->where('status_id', 11)->exists()){
                 $result = [
-                    'code'    => '10000',
+                    'code'    => '10101',
                     'message' => 'Bunday zayafka mavjud!'
                 ];
             }
-        }
-        // Check application is not blocked
-        if($request->has('serial_number')){
-            $blocked = BlockedApplications::where('serial_number', $request->serial_number)->exists();
-            if($blocked){
+            if(Application::where('serial_number', $request->serial_number)->where('status_id', 10)->exists()){
                 $result = [
-                    'code'    => '10003',
-                    'message' => 'Bu Ariza blocklangan!'
+                    'code'    => '10103',
+                    'message' => 'Arizangiz rad qilindi!'
+                ];
+            }
+            if(BlockedApplications::where('serial_number', $request->serial_number)->exists()){
+                $result = [
+                    'code'    => '10104',
+                    'message' => 'Arizangiz blocklangan!'
                 ];
             }
         }
@@ -38,6 +40,6 @@ trait CheckApp{
                 ];
             }
         }
-        return  $result;
+        return $result;
     }
 }

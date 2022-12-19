@@ -31,7 +31,7 @@ class RestController extends Controller
     }
 
     protected function confirmLimit(){
-        return App::call($this->basePathApplicationAPI.'\PaymentController@confirmLimit');
+        return App::call($this->basePathApplicationAPI.'\ConfirmLimitController@confirmLimit');
     }
 
     // Rest Application API's
