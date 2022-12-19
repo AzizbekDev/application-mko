@@ -23,6 +23,10 @@ class Client extends Model
         return $this->belongsTo(Application::class);
     }
 
+    public function wallet(){
+        return $this->hasOne(ClientWallet::class);
+    }
+
     public function scopeStatusApp($query, $status_id)
     {
         return $query->where('status_app_id', '=', $status_id);

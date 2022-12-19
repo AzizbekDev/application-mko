@@ -30,16 +30,6 @@ class SendUniredSms
             'Accept:application/json'
         ];
         $response = $this->post($this->base_url,json_encode($sms_body),$headers);
-
-        return $this->logSms($response);
-    }
-
-    protected function logSms($response){
-        if($response && array_key_exists('status', $response) && $response['status']){
-            Log::channel('smslogger')->info(json_encode($response,JSON_UNESCAPED_UNICODE ));
-        }else{
-            Log::channel('smslogger')->error(json_encode($response,JSON_UNESCAPED_UNICODE ));
-        }
         return $response;
     }
 }
