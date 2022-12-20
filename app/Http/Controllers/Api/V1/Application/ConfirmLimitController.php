@@ -25,6 +25,7 @@ class ConfirmLimitController extends Controller
         if ($validator->fails()) return $this->responseError('10422', $validator->messages());
         $app_info = $this->application->whereKeyApp($request->key_app)->first();
 
+        if($app_info->step == 4 && $app_info->status_id == 11) return $this->responseSuccess('10204', "Arizangiz qabul qilingan.");
         if($request->confirm){
             $clientInfo = [
                 "password" => Str::random(5),

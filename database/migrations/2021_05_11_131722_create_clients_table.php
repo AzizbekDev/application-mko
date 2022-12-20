@@ -35,7 +35,7 @@ class CreateClientsTable extends Migration
                 "3-Success Client," .
                 "4-Rejected Client," .
                 "5-Closed Client");
-            $table->string('status_message')->nullable();
+            $table->string('status_message')->default('New Client');
             $table->timestamps();
             $table->softDeletes();
         });
