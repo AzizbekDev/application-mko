@@ -12,13 +12,11 @@ class KatmService
             'pLogin'    => "universalbank",
             'pPassword' => "j8apoiIOm#q"
         ];
-        $this->createClaimUrl = "http://10.22.50.3:8000/inquiry/individual";
-        //KATM_CREATE_CLAIM_URL_TEST=http://10.22.50.3:3035/inquiry/individual
-        //KATM_CREATE_CLAIM_URL=http://10.22.50.3:8000/inquiry/individual
-        $this->reportUrl = "http://10.22.50.3:8001/katm-api/v1/credit/report";
-        $this->climeDecline = "http://10.22.50.3:8001/katm-api/v1/claim/decline";
+        $this->createClaimUrl  = "http://10.22.50.3:8000/inquiry/individual";
+        $this->reportUrl       = "http://10.22.50.3:8001/katm-api/v1/credit/report";
+        $this->climeDecline    = "http://10.22.50.3:8001/katm-api/v1/claim/decline";
         $this->reportStatusUrl = "http://10.22.50.3:8001/katm-api/v1/credit/report/status";
-        $this->clientInfo = "http://10.22.50.3:8001/katm-api/v1/client/personal/info";
+        $this->clientInfo      = "http://10.22.50.3:8001/katm-api/v1/client/personal/info";
     }
 
     public function inquiry_individual($data){
@@ -36,7 +34,7 @@ class KatmService
         return $result;
     }
 
-    public function credit_report($claim_id = 48338){
+    public function credit_report($claim_id){
         $claim_id = '+'.$claim_id.'+';
         $data = [
             "pHead"         => "048",

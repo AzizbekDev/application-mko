@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\TaxInfo;
+use App\Models\ApplicationInfo;
 
 class TaxInfoObserver
 {
@@ -14,7 +15,7 @@ class TaxInfoObserver
      */
     public function created(TaxInfo $taxInfo)
     {
-        //
+
     }
 
     /**
@@ -25,7 +26,10 @@ class TaxInfoObserver
      */
     public function updated(TaxInfo $taxInfo)
     {
-        //
+        $taxInfo->applicationInfo()->update([
+            'fio' => $taxInfo->name,
+            'inn' => $taxInfo->tin
+        ]);
     }
 
     /**

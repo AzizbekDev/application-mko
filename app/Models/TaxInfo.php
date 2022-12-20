@@ -24,4 +24,9 @@ class TaxInfo extends Model
     public function details(){
         return $this->hasMany(TaxDetail::class);
     }
+
+    public function applicationInfo()
+    {
+        return $this->hasOne(ApplicationInfo::class, 'pin', 'pinfl');
+    }
 }

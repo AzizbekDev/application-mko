@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Models\Application;
 use App\Observers\ApplicationObserver;
+use App\Models\TaxInfo;
+use App\Observers\TaxInfoObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -32,5 +34,6 @@ class EventServiceProvider extends ServiceProvider
         parent::boot();
 
         Application::observe(ApplicationObserver::class);
+        TaxInfo::observe(TaxInfoObserver::class);
     }
 }

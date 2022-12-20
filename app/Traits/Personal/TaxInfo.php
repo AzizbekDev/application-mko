@@ -7,8 +7,18 @@ use App\Services\TaxService;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
 trait TaxInfo{
-    static $statusSuccess = 1;
+    static $statusSuccess  = 1;
+    static $messageSuccess = 'Success';
     public function getTaxSalaryInfo($data){
+        $query = TaxModel::where($data)->first();
+        if($query && $query->status_id == 1){
+            return [
+                "success" => true,
+                "reason"  => null,
+                "average_salary" => $query->average_salary,
+                "data"    => $query->details->toArray()
+            ];
+        }
         $response = (new TaxService())->getSalaryInfo($data);
         if($response && array_key_exists('success', $response)){
             if($response['success'] && !empty($response['data'])){
@@ -22,7 +32,8 @@ trait TaxInfo{
                     'ns11_code'     => $response['data'][0]['ns11_code'],
                     'last_year'     => (int)Carbon::now()->format('Y'),
                     'last_period'   => (int)Carbon::now()->format('m'),
-                    'status_id'     => self::$statusSuccess
+                    'status_id'     => self::$statusSuccess,
+                    'status_message'=> self::$messageSuccess,
                 ]);
                 $details = new Collection();
                 foreach ($response['data'] as $data){
@@ -41,7 +52,9 @@ trait TaxInfo{
                 $average_salary = $details->groupBy('company_tin')->map(function ($company){
                    return $company->slice(-6, 6)->avg('salary');
                 })->avg();
-                $taxModel->update(['average_salary' => intval($average_salary)]);
+                $taxModel->update([
+                    'average_salary' => intval($average_salary)
+                ]);
                 $taxModel->details()->delete();
                 $taxModel->details()->createMany($details->toArray());
             }
@@ -52,5 +65,10 @@ trait TaxInfo{
             "reason"  => "Tax service not working...",
             "data"    => null
         ];
+    }
+
+    public function getAverageSalary($data){
+        $tax_info = TaxModel::where(['serial_number' => $data['serial_number']])->first();
+        return $tax_info->average_salary ?? 0;
     }
 }

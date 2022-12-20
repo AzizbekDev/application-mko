@@ -32,7 +32,11 @@ class ApplicationObserver
      */
     public function updated(Application $application)
     {
-        //
+        if($application->step == 2){
+            $application->applicationInfo()->update([
+                'phone' => $application->phone
+            ]);
+        }
     }
 
     /**

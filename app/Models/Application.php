@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Personal\TaxInfo;
 use Illuminate\Database\Eloquent\Model;
 
 class Application extends Model
@@ -91,5 +92,10 @@ class Application extends Model
     public function personalInfo()
     {
         return $this->hasOne(PersonalInfo::class, 'pin', 'pin');
+    }
+
+    public function taxInfo()
+    {
+        return $this->hasOne(TaxInfo::class, 'pinfl', 'pin');
     }
 }
