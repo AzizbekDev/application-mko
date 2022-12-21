@@ -17,8 +17,8 @@
                        <div class="card-header">
                        <h5 class="card-title">
                            <i class="fa fa-user-circle"></i>
-                           MUZAFFAROV AZIZBEK AVAZBEK OGLI
-                           <sup class="badge badge-primary mt-0">Новая заявка</sup>
+                           {{ $application_info->fio ?? $application->serial_number }}
+                           <sup class="badge badge-primary mt-0">{{ $client->status_app_name }}</sup>
                        </h5>
                    </div>
                    <div class="card-body">
@@ -49,10 +49,16 @@
                                            <!--Actions-->
                                            <div class="tab-pane fade" id="actions-tab" role="tabpanel" aria-labelledby="client-info" style="min-height: 150px">
                                                <div class="card-body p-0">
-                                                   <div class="row">
-                                                       <a class="btn btn-app bg-light">
-                                                           <i class="fa fa-plus text-success" aria-hidden="true"></i> Кошелек открыт
-                                                       </a>
+                                                   <div class="my-4 pl-4">
+                                                       @if(!$wallet)
+                                                           <a class="btn btn-app bg-light">
+                                                               <i class="fa fa-plus text-success" aria-hidden="true" onclick="openWallet({{ $client->id }})"></i> Кошелек открыт
+                                                           </a>
+                                                       @else
+                                                           <a class="btn btn-app bg-light">
+                                                               <i class="fa fa-check text-success" aria-hidden="true"></i> Кошелек открыл
+                                                           </a>
+                                                       @endif
                                                        <a class="btn btn-app bg-light">
                                                            <i class="fa fa-edit text-info"></i> Изменить статус
                                                        </a>
@@ -68,73 +74,190 @@
                                                    <table class="table table-hover">
                                                        <tbody>
                                                        <tr>
-                                                           <td><strong>ID_клиентa</strong></td>
-                                                           <td>99000092</td>
+                                                           <td><strong>Client ID</strong></td>
+                                                           <td>{{ $client->id }}</td>
                                                        </tr>
                                                        <tr>
-                                                           <td><strong>Договор ID</strong></td>
-                                                           <td>300309</td>
+                                                           <td><strong>Application Status</strong></td>
+                                                           <td>{{ $client->status_app_name }}</td>
                                                        </tr>
                                                        <tr>
-                                                           <td><strong>ФИО</strong></td>
-                                                           <td>MUZAFFAROV AZIZBEK AVAZBEK OGLI</td>
+                                                           <td><strong>Client Status</strong></td>
+                                                           <td>{{ $client->status_name }}</td>
                                                        </tr>
                                                        <tr>
-                                                           <td><strong>Дт_рождения</strong></td>
-                                                           <td>1993-02-01</td>
+                                                           <td><strong>Client Code</strong></td>
+                                                           <td>{{ $client->client_code ?? 'Null' }}</td>
                                                        </tr>
                                                        <tr>
-                                                           <td><strong>ПасспортID</strong></td>
-                                                           <td>AA6009200</td>
+                                                           <td><strong>Client Password</strong></td>
+                                                           <td>{{ $client->password }}</td>
                                                        </tr>
                                                        <tr>
-                                                           <td><strong>PINFL</strong></td>
-                                                           <td>30102934310017</td>
+                                                           <td><strong>Client Lang</strong></td>
+                                                           <td>{{ $client->lang }}</td>
                                                        </tr>
                                                        <tr>
-                                                           <td><strong>Выдан</strong></td>
-                                                           <td>FARGONA V FARGONA SH IIB</td>
-                                                       </tr>
-                                                       <tr>
-                                                           <td><strong>ИНН</strong></td>
-                                                           <td>548057878</td>
-                                                       </tr>
-                                                       <tr>
-                                                           <td><strong>Телефон</strong></td>
-                                                           <td>999986352 <a href="#myModalTel" role="button" data-toggle="modal"><i class="fa fa-edit"></i></a></td>
-                                                       </tr>
-                                                       <tr>
-                                                           <td><strong>Текущий лимит</strong></td>
-                                                           <td>1800000000</td>
-                                                       </tr>
-                                                       <tr>
-                                                           <td><strong>Начальный лимит</strong></td>
-
-                                                           <td>to'ldirilmagan</td>
-                                                       </tr>
-                                                       <tr>
-                                                           <td><strong>Максимальный лимит</strong></td>
-
-                                                           <td>to'ldirilmagan</td>
-                                                       </tr>
-                                                       <tr>
-                                                           <td><strong>Тип</strong></td>
-                                                           <td>165</td>
-                                                       </tr>
-                                                       <tr>
-                                                           <td><strong>Адрес</strong></td>
-                                                           <td>ФАРГОНА ВИЛОЯТИ ФАРГОНА ШАХРИ NODIRABEGIM TOR 10 A</td>
-                                                       </tr>
-                                                       <tr>
-                                                           <td><strong>Места работы</strong></td>
-                                                           <td> </td>
-                                                       </tr>
-                                                       <tr>
-                                                           <td><strong>Принадлежит к</strong></td>
-                                                           <td>Application Unired</td>
+                                                           <td><strong>Client Created</strong></td>
+                                                           <td>{{ $client->date_pub }}</td>
                                                        </tr>
                                                        </tbody>
                                                    </table>
+                                               </div>
+                                           </div>
+                                           <!-- Application -->
+                                           <div class="tab-pane fade" id="application" role="tabpanel" aria-labelledby="application">
+                                               <div class="card-body p-0">
+                                                   <table class="table table-hover">
+                                                       <tbody>
+                                                       <tr>
+                                                           <td><strong>Application ID</strong></td>
+                                                           <td>{{ $application->id }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Key APP</strong></td>
+                                                           <td>{{ $application->key_app }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Serial Number</strong></td>
+                                                           <td>{{ $application->serial_number }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Pinfl</strong></td>
+                                                           <td>{{ $application->pin }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Card Number</strong></td>
+                                                           <td>{{ $application->card_mask }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Phone</strong></td>
+                                                           <td>{{ $application->phone }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Identified</strong></td>
+                                                           <td>{{ $application->is_identified ? 'Identified' : 'Not Identified' }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Created At</strong></td>
+                                                           <td>{{ $application->created_at }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Updated At</strong></td>
+                                                           <td>{{ $application->updated_at }}</td>
+                                                       </tr>
+                                                       </tbody>
+                                                   </table>
+                                               </div>
+                                           </div>
+                                           <!-- Application Info-->
+                                           <div class="tab-pane fade" id="application-info" role="tabpanel" aria-labelledby="application-info">
+                                               <div class="card-body p-0">
+                                                   <table class="table table-hover">
+                                                       <tbody>
+                                                       <tr>
+                                                           <td><strong>Full Name</strong></td>
+                                                           <td>{{ $application_info->fio }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Serial Number</strong></td>
+                                                           <td>{{ $application_info->serial_number }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Pinfl</strong></td>
+                                                           <td>{{ $application_info->pin }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Inn</strong></td>
+                                                           <td>{{ $application_info->inn }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Birth Date</strong></td>
+                                                           <td>{{ $application_info->birth_date }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Gender</strong></td>
+                                                           <td>{{ $application_info->gender ? 'Male' : 'Female' }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Telegram</strong></td>
+                                                           <td>{{ $application_info->telegram }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Work Address</strong></td>
+                                                           <td>{{ $application_info->work_address ?? 'Not Filled' }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Work Phone</strong></td>
+                                                           <td>{{ $application_info->work_phone ?? 'Not Filled' }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Work Title</strong></td>
+                                                           <td>{{ $application_info->work_title ?? 'Not Filled' }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Work Place</strong></td>
+                                                           <td>{{ $application_info->work_place ?? 'Not Filled' }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Profession</strong></td>
+                                                           <td>{{ $application_info->profession ?? 'Not Filled' }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Created At</strong></td>
+                                                           <td>{{ $application_info->created_at }}</td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td><strong>Updated At</strong></td>
+                                                           <td>{{ $application_info->updated_at }}</td>
+                                                       </tr>
+                                                       </tbody>
+                                                   </table>
+                                               </div>
+                                           </div>
+                                           <!-- Application Info-->
+                                           <div class="tab-pane fade" id="wallet-info" role="tabpanel" aria-labelledby="wallet-info">
+                                               <div class="card-body p-0">
+                                                  @if($wallet)
+                                                    <table class="table table-hover">
+                                                           <tbody>
+                                                           <tr>
+                                                               <td><strong>Owner</strong></td>
+                                                               <td>{{ $wallet->owner }}</td>
+                                                           </tr>
+                                                           <tr>
+                                                               <td><strong>Wallet Card Number</strong></td>
+                                                               <td>{{ $wallet->card_number }}</td>
+                                                           </tr>
+                                                           <tr>
+                                                               <td><strong>Wallet SMS Phone</strong></td>
+                                                               <td>{{ $wallet->phone }}</td>
+                                                           </tr>
+                                                           <tr>
+                                                               <td><strong>Wallet Token</strong></td>
+                                                               <td>{{ $wallet->token }}</td>
+                                                           </tr>
+                                                           <tr>
+                                                               <td><strong>Wallet Status</strong></td>
+                                                               <td>{{ $wallet->status ? 'Active' : 'Inactive' }}</td>
+                                                           </tr>
+                                                           <tr>
+                                                               <td><strong>Balance</strong></td>
+                                                               <td>{{ $wallet->balance }}</td>
+                                                           </tr>
+                                                           <tr>
+                                                               <td><strong>Created At</strong></td>
+                                                               <td>{{ $wallet->created_at }}</td>
+                                                           </tr>
+                                                           </tbody>
+                                                       </table>
+                                                  @else
+                                                      <div class="my-4 pl-4">
+                                                          <a class="btn btn-app bg-light">
+                                                              <i class="fa fa-plus text-success" aria-hidden="true" onclick="openWallet({{ $client->id }})"></i> Кошелек открыт
+                                                          </a>
+                                                      </div>
+                                                  @endif
                                                </div>
                                            </div>
                                        </div>
@@ -165,44 +288,53 @@
                                    <th>Владелец карты</th>
                                    <th>Баланс</th>
                                    <th>Телефон</th>
-                                   <th>Статус</th>
-                                   <th>Тип</th>
                                    <th>СМС</th>
+                                   <th>Тип</th>
+                                   <th>Статус</th>
                                    <th width="40px;">Действие</th>
                                </tr>
                                </thead>
-                               <tbody id="card_table_body aligin-middle">
-                               <tr id="row_28869" class="UZCARD">
-                                   <td class="v-a">2</td>
-                                   <td class="v-a">8600482957804708 / 1024</td>
-                                   <td class="v-a" id="owner_28869">MUZAFFAROV AZIZBEK</td>
-                                   <td class="v-a" id="balance_28869">UZS&nbsp;0.13</td>
-                                   <td class="v-a" id="phone_28869">998999986352</td>
-                                   <td class="v-a" id="status_28869">Карта активна, подключено смс уведомление.</td>
-                                   <td class="v-a">UZCARD</td>
-                                   <td class="v-a text-success" id="sms_28869"><i class="fa fa-toggle-on text-success"></i></td>
-                                   <td class="v-a">
-                                       <div class="btn-group pb-1">
-                                           <button type="button" class="btn btn-sm btn-success update">
-                                               <i class="fa fa-sync"></i>
-                                           </button>
-                                           <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_card28869">
-                                               <i class="fa fa-eye"></i>
-                                           </button>
-                                           <form action="#" method="post">
-                                               @csrf
-                                               @method('delete')
-                                               <button type="button" class="btn btn-danger btn-sm submitButton"><i class="fa fa-trash"></i></button>
-                                           </form>
-                                       </div>
-                                   </td>
-                               </tr>
+                               <tbody class="aligin-middle">
+                                @foreach($salary_cards as $salary_card)
+                                    <tr id="row_{{$salary_card->id}}" class="card_type_{{ $salary_card->card_type }}">
+                                        <td class="v-a">{{ $salary_card->card_order }}</td>
+                                        <td class="v-a">{{ $salary_card->card_number }} / {{ $salary_card->expire }}</td>
+                                        <td class="v-a" id="owner_{{$salary_card->id }}">{{ $salary_card->owner }}</td>
+                                        <td class="v-a" id="balance_{{$salary_card->id }}">UZS&nbsp;{{ $salary_card->balance ?? 0 }}</td>
+                                        <td class="v-a" id="phone_{{$salary_card->id }}">{{ $salary_card->phone }}</td>
+                                        <td class="v-a" id="sms_{{$salary_card->id }}">{{ ($salary_card->sms == 1) ? "Карта активна, подключено смс уведомление." : "Карта неактивна" }}</td>
+                                        <td class="v-a">{{ $salary_card->card_type }}</td>
+                                        <td class="v-a text-success" id="status_{{$salary_card->id }}">
+                                            @if($salary_card->is_active)
+                                                <i class="fa fa-toggle-on text-success"></i>
+                                            @else
+                                                <i class="fa fa-toggle-off text-danger"></i>
+                                            @endif
+                                        </td>
+                                        <td class="v-a">
+                                            <div class="btn-group pb-1">
+                                                <button type="button" class="btn btn-sm btn-success update">
+                                                    <i class="fa fa-sync"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_card{{$salary_card->id}}">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                                <form action="#" method="post">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="button" class="btn btn-danger btn-sm submitButton"><i class="fa fa-trash"></i></button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
                                </tbody>
                            </table>
                        </div>
                        <!-- /.card-body -->
                        <!-- Card Modal -->
-                       <div class="modal fade" id="modal_card28869" tabindex="-1" role="dialog" aria-hidden="true">
+                       @foreach($salary_cards as $salary_card)
+                       <div class="modal fade" id="modal_card{{$salary_card->id}}" tabindex="-1" role="dialog" aria-hidden="true">
                            <div class="modal-dialog modal-dialog-centered" role="document">
                                <div class="modal-content">
                                    <div class="modal-header">
@@ -215,43 +347,40 @@
                                        <table class="table table-striped table-bordered">
                                            <tbody>
                                            <tr>
-                                               <th>ID_клиентa</th>
-                                               <td>99000092</td>
+                                               <th>Распоряжению</th>
+                                               <td>{{ $salary_card->card_order }}</td>
                                            </tr>
                                            <tr>
                                                <th>Номер карты</th>
-                                               <td>8600482957804708 / 1024</td>
+                                               <td>{{ $salary_card->card_number }} / {{ $salary_card->expire }}</td>
                                            </tr>
                                            <tr>
                                                <th>Владелец карты</th>
-                                               <td>MUZAFFAROV AZIZBEK</td>
+                                               <td>{{ $salary_card->owner }}</td>
                                            </tr>
                                            <tr>
                                                <th>Телефон</th>
-                                               <td>999986352</td>
-                                           </tr><tr>
+                                               <td>+{{ $salary_card->phone }}</td>
+                                           </tr>
+                                           <tr>
                                                <th>СМС</th>
-                                               <td>1</td>
+                                               <td>{{ $salary_card->sms ? "Карта активна, подключено смс уведомление." : "Карта неактивна" }}</td>
                                            </tr>
                                            <tr>
                                                <th>Статус</th>
-                                               <td>Карта активна, подключено смс уведомление.</td>
+                                               <td>{{ $salary_card->is_active ? 'Активный' : 'Не активный' }}</td>
                                            </tr>
                                            <tr>
                                                <th>Тип</th>
-                                               <td>UZCARD</td>
+                                               <td>{{ $salary_card->card_type }}</td>
                                            </tr>
                                            <tr>
-                                               <th>acct</th>
-                                               <td>22618000599062747001</td>
-                                           </tr>
-                                           <tr>
-                                               <th>acct_type</th>
-                                               <td>22618</td>
+                                               <th>Bank</th>
+                                               <td>{{ $salary_card->bank }}</td>
                                            </tr>
                                            <tr>
                                                <th>Время_создания</th>
-                                               <td>2021-01-19 22:45:02</td>
+                                               <td>{{ $salary_card->created_at }}</td>
                                            </tr>
                                            </tbody>
                                        </table>
@@ -262,6 +391,7 @@
                                </div>
                            </div>
                        </div>
+                       @endforeach
                    </div>
                </div>
                <div class="col-md-12">
@@ -398,8 +528,21 @@
 @section('scripts')
     @parent
     <script>
-        $('.card').collapse({
-            toggle: false
-        })
+        function openWallet(client_id){
+            $.ajax({
+                url: '/admin/client/wallet-create',
+                type: "post",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    client_id: client_id,
+                },
+                success:function (result) {
+                    console.log(result);
+                },
+                error:function (err) {
+                    console.log(err);
+                }
+            })
+        }
     </script>
 @endsection

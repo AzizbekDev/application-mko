@@ -2,27 +2,11 @@
 
 namespace App\Models;
 
-use App\Traits\Personal\TaxInfo;
 use Illuminate\Database\Eloquent\Model;
 
 class Application extends Model
 {
     protected $table    = 'applications';
-    protected $statuses = [
-        'New Application',
-        'Identification Error',
-        'Identified Success',
-        'Card Scoring Error',
-        'Card Scoring Success',
-        'Salary Scoring Error',
-        'Salary Scoring Success',
-        'Credit Scoring Error',
-        'Credit Scoring Success',
-        'Confirmation Limit',
-        'Rejected Limit',
-        'Client Opened',
-        'Client Rejected'
-    ];
 
     protected $fillable = [
         'key_app',
@@ -63,7 +47,7 @@ class Application extends Model
     {
         return $query->where('serial_number',$serial_number);
     }
-
+    
     // Single Scopes
     public function scopeGetPersonalInfoByKeyApp($query, $data)
     {
@@ -76,26 +60,31 @@ class Application extends Model
         return $this->hasOne(Client::class);
     }
 
+    public function tax()
+    {
+        return $this->hasOne(TaxInfo::class);
+    }
+
     public function applicationInfo()
     {
         return $this->hasOne(ApplicationInfo::class);
     }
 
-    public function salaryCards(){
+    public function salaryCards()
+    {
         return $this->hasMany(SalaryCard::class);
     }
 
-    public function partnerInfo(){
+    public function partnerInfo()
+    {
         return $this->hasOne(ApiUser::class, 'id', 'partner_id');
     }
 
-    public function personalInfo()
-    {
-        return $this->hasOne(PersonalInfo::class, 'pin', 'pin');
+    public function asokiClient(){
+        return $this->hasOne(AsokiClient::class, 'claim_id', 'id');
     }
-
-    public function taxInfo()
-    {
-        return $this->hasOne(TaxInfo::class, 'pinfl', 'pin');
-    }
+//    public function personalInfo()
+//    {
+//        return $this->hasOne(PersonalInfo::class, 'pin', 'pin');
+//    }
 }

@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Api\V1\Application;
 use Illuminate\Http\Request;
 use App\Http\Traits\ValidateMethod;
 use App\Traits\Personal\TaxInfo;
+use App\Traits\Personal\KatmInfo;
 use App\Http\Controllers\Controller;
 use App\Models\KatmScoring;
 use App\Models\Application as ApplicationModel;
 
 class CardInfoController extends Controller
 {
-    use ValidateMethod, TaxInfo;
+    use ValidateMethod, TaxInfo, KatmInfo;
     private $application;
 
     public function __construct(ApplicationModel $model)
@@ -44,6 +45,7 @@ class CardInfoController extends Controller
             'expire'        => $request->card_expire,
             'phone'         => $request->phone
         ]);
+        $this->credit_report($app_info->asokiClient->id);
         if($app_info->step = 2 && $app_info->status_id >= 6){
             return $this->responseSuccess('10112', 'Scoringdan o\'tdi', [
                 'key_app' => $app_info->key_app,
@@ -56,13 +58,8 @@ class CardInfoController extends Controller
                 ]
             ]);
         }else{
-
-            $salary_info = $this->getTaxSalaryInfo([
-                'serial_number' => $app_info->serial_number
-            ]);
-
+            $salary_info = $this->getTaxSalaryInfo($app_info->id);
             if($salary_info && array_key_exists('success', $salary_info) && $salary_info['success'] == false) return $this->responseError('10105', $salary_info['reason']);
-
             if($salary_info && $salary_info['success']){
                 $average_salary = intval($salary_info['average_salary']);
                 if($average_salary != 0 && $average_salary > 2000000){

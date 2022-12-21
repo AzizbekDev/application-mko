@@ -62,6 +62,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Clients
     Route::get('clients', 'ClientsController@index')->name('clients.index');
     Route::get('client/info/{client}', 'ClientsController@show')->name('clients.show');
+    Route::post('client/wallet-create', 'ClientsController@createWallet')->name('clients.wallet.create');
 });
 
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {

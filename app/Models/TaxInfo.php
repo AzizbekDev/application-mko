@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TaxInfo extends Model
 {
     protected $fillable = [
-        'name',
+        'application_id',
         'tin',
         'pinfl',
         'serial_number',
@@ -23,6 +23,10 @@ class TaxInfo extends Model
     // Model Relations
     public function details(){
         return $this->hasMany(TaxDetail::class);
+    }
+
+    public function application(){
+        return $this->belongsTo(Application::class);
     }
 
     public function applicationInfo()

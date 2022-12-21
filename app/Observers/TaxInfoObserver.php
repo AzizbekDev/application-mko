@@ -26,10 +26,10 @@ class TaxInfoObserver
      */
     public function updated(TaxInfo $taxInfo)
     {
-        $taxInfo->applicationInfo()->update([
-            'fio' => $taxInfo->name,
-            'inn' => $taxInfo->tin
-        ]);
+//        $taxInfo->applicationInfo()->update([
+//            'fio' => $taxInfo->name,
+//            'inn' => $taxInfo->tin
+//        ]);
     }
 
     /**

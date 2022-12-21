@@ -17,16 +17,13 @@ class CreateAsokiInfosTable extends Migration
             $table->id();
             $table->unsignedInteger('asoki_client_id')->nullable();
             $table->unsignedInteger('claim_id')->nullable();
-            $table->string('claim_number',10)->nullable();
             $table->string('token')->nullable();
             $table->longText('info')->nullable();
-            $table->tinyInteger('status_id')->default(1)->comment('1-new, 2-success(add_credit_info), 3-error(claim not found), 4-limit exceeded, 5-awaits confirmation');
-            $table->string('status_message')->nullable();
-            $table->tinyInteger('scoring_status')->default(1)->comment('1-ko`rilmoqda, 2-o`tdi, 3-o`tmadi');
-            $table->text('scoring_result')->nullable();
-            $table->index(['claim_number','token']);
+            $table->tinyInteger('status_id')->default(1)->comment('1-New Info, 2-Success, 3-Error(claim not found), 4-Limit exceeded, 5-Awaits confirmation');
+            $table->string('status_message')->default('New Info');
+            $table->text('response_info')->nullable();
+            $table->index(['asoki_client_id','claim_id','token']);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

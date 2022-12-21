@@ -145,10 +145,10 @@
                         {{ $application->application->card_mask }}
                     </td>
                     <td class="text-center" style="vertical-align: middle">
-                        {{ $application->status_app_id }}
+                        {{ $application->status_app_name }}
                     </td>
                     <td class="text-center" style="vertical-align: middle">
-                        <span class="badge text-white" style="vertical-align: middle; background-color: {{ $application->application->partnerInfo->color }};">
+                        <span class="badge text-white" style="vertical-align: middle; background-color: {{ $application->application->partnerInfo->color ?? 'red'}};">
                             {{ $application->application->partnerInfo->name  }}
                         </span>
                     </td>

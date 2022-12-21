@@ -9,13 +9,19 @@ use App\Http\Controllers\Controller;
 use App\Models\BlockedApplications;
 use App\Models\Application;
 use App\Models\Client;
+use App\Traits\Personal\KatmInfo;
 
 class ApplicationsController extends Controller
 {
+    use KatmInfo;
     public function index(Request $request)
     {
-        abort_if(Gate::denies('all_application_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        return view('admin.applications.index');
+//        abort_if(Gate::denies('all_application_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $applications = Client::with([
+            'application',
+            'application.applicationInfo',
+            'application.partnerInfo'])->get();
+        return view('admin.applications.index', compact('applications'));
     }
 
     public function new(Request $request){

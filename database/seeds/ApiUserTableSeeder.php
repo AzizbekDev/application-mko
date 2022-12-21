@@ -20,7 +20,8 @@ class ApiUserTableSeeder extends Seeder
                 'id'               => 1,
                 'name'             => 'Unired Mobile',
                 'login'            => 'unired_mobile',
-                'password'         => Str::random(5),
+//                'password'         => Str::random(5),
+                'password'         => 'yJ5dY',
                 'created_by'       => 1,
                 'token'            => Str::uuid(),
                 'token_expires_at' => Carbon::now()->addDays(180)

@@ -124,6 +124,51 @@
                         <th>Действия</th>
                     </tr>
                 </thead>
+                <tbody>
+                @forelse($applications as $application)
+                    <tr id="{{ 'tr_'.$application->id }}">
+                        <td class="text-center" style="vertical-align: middle">
+                            {{ $application->application->id }}
+                        </td>
+                        <td style="vertical-align: middle">
+                            <a href="#" style="color: black">
+                                {{ mb_strtoupper($application->application->applicationInfo->fio) }}
+                            </a>
+                        </td>
+                        <td class="text-center" style="vertical-align: middle">
+                            {{ $application->application->phone }}
+                        </td>
+                        <td class="text-center" style="vertical-align: middle">
+                            {{ $application->application->serial_number }}
+                        </td>
+                        <td class="text-center" style="vertical-align: middle">
+                            {{ $application->application->card_mask }}
+                        </td>
+                        <td class="text-center" style="vertical-align: middle">
+                            {{ $application->status_app_name }}
+                        </td>
+                        <td class="text-center" style="vertical-align: middle">
+                        <span class="badge text-white" style="vertical-align: middle; background-color: {{ $application->application->partnerInfo->color ?? "red" }};">
+                            {{ $application->application->partnerInfo->name  }}
+                        </span>
+                        </td>
+                        <td class="text-center text-info" style="vertical-align: middle">
+                            {!! $application->date_pub." <br/> ". $application->created_at->diffForHumans() !!}
+                        </td>
+                        <td class="text-center" style="vertical-align: middle">
+                            <div class="btn-group">
+                                <a href="{{ route('admin.clients.show', $application->id) }}" class="btn btn-outline-info btn-sm">Детали</a>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="9" style="vertical-align: middle">
+                            <p class="text-center">Applications empty</p>
+                        </td>
+                    </tr>
+                @endforelse
+                </tbody>
             </table>
         </div>
     </div>

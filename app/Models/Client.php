@@ -31,4 +31,14 @@ class Client extends Model
     {
         return $query->where('status_app_id', '=', $status_id);
     }
+
+    public function getStatusAppNameAttribute()
+    {
+        $statues = ["New App", "Viewed App", "Approved App", "Rejected App", "Blocked App"];
+        return $statues[$this->status_app_id];
+    }
+    public function getStatusNameAttribute(){
+        $statues = ["New Client", "Wallet Opened", "Limit Opened", "Success Client", "Rejected Client", "Closed Client"];
+        return $statues[$this->status_id];
+    }
 }

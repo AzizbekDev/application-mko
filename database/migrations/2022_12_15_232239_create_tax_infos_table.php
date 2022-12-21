@@ -15,7 +15,7 @@ class CreateTaxInfosTable extends Migration
     {
         Schema::create('tax_infos', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
+            $table->unsignedInteger('application_id')->nullable();
             $table->string('tin',9)->nullable();
             $table->string('pinfl',14)->nullable();
             $table->string('serial_number',9)->nullable();
