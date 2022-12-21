@@ -45,18 +45,15 @@ class CardInfoController extends Controller
             'expire'        => $request->card_expire,
             'phone'         => $request->phone
         ]);
-        $this->credit_report($app_info->asokiClient->id);
         if($app_info->step = 2 && $app_info->status_id >= 6){
             return $this->responseSuccess('10112', 'Scoringdan o\'tdi', [
                 'key_app' => $app_info->key_app,
                 'data'    => [
-                    'salary_average'   => $this->getAverageSalary([
-                        'serial_number' => $app_info->serial_number
-                    ]),
-                    'min_limit'      => 3000000,
-                    'max_limit'      => 24000000
-                ]
-            ]);
+                    'salary_average' => $this->getAverageSalary(['serial_number' => $app_info->serial_number]),
+                        'min_limit'  => $this->getAverageSalary(['serial_number' => $app_info->serial_number]),
+                        'max_limit'  => 26000000
+                    ]
+                ]);
         }else{
             $salary_info = $this->getTaxSalaryInfo($app_info->id);
             if($salary_info && array_key_exists('success', $salary_info) && $salary_info['success'] == false) return $this->responseError('10105', $salary_info['reason']);
@@ -65,8 +62,8 @@ class CardInfoController extends Controller
                 if($average_salary != 0 && $average_salary > 2000000){
                     $scoring_info = [
                         'salary_average' => $average_salary,
-                        'min_limit'      => 3000000,
-                        'max_limit'      => 24000000
+                            'min_limit'      => $average_salary,
+                            'max_limit'      => 26000000
                     ];
                     $app_info->update([
                         'step' => 2,
@@ -79,16 +76,16 @@ class CardInfoController extends Controller
                     ]);
                 }else{
                     $app_info->update([
-                        'step' => 2,
-                        'status_id' => 5,
+                        'step'           => 2,
+                        'status_id'      => 5,
                         'status_message' => 'Salary Scoring Error'
                     ]);
                     return $this->responseError('10112', 'Scoringdan o\'tmadi', [
                         'key_app' => $app_info->key_app,
                         'data'    => [
                             'salary_average' => $average_salary,
-                            'min_limit'      => 0,
-                            'max_limit'      => 0
+                                'min_limit'      => 0,
+                                'max_limit'      => 0
                         ]
                     ]);
                 }
