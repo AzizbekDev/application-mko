@@ -54,7 +54,10 @@ class SettingsTableSeeder extends Seeder
                     'katm_url'      => env('KATM_URL', 'KATM_URL'),
                     'asoki_url'     => env('ASOKI_URL', 'ASOKI_URL'),
                     'username'      => env('KATM_USERNAME', 'KATM_USERNAME'),
-                    'password'      => env('KATM_PASSWORD', 'KATM_PASSWORD')
+                    'password'      => env('KATM_PASSWORD', 'KATM_PASSWORD'),
+                    'head'          => 'MKO',
+                    'code'          => '06101',
+                    'type'          => 'T'
                 ])
             ],
             [

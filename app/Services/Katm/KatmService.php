@@ -9,29 +9,36 @@ class KatmService
     protected $katmUrl;
     protected $asokiUrl;
     protected $security;
+    protected $type;
+    protected $pHead;
+    protected $pCode;
 
     public function __construct(){
         $this->settings = json_decode(get_settings_value_by_name('katm'), true);
         $this->security = [
-            'pLogin'    => "universalbank",
-            'pPassword' => "j8apoiIOm#q"
+            'pLogin'    => $this->settings['username'], //"universalbank",
+            'pPassword' => $this->settings['password'] // "j8apoiIOm#q"
         ];
         $this->katmUrl         = $this->settings['katm_url'];
         $this->asokiUrl        = $this->settings['asoki_url'];
-        $this->createClaimUrl  = "http://10.22.50.3:8000/inquiry/individual";
-        $this->reportUrl       = "http://10.22.50.3:8001/katm-api/v1/credit/report";
-        $this->reportStatusUrl = "http://10.22.50.3:8001/katm-api/v1/credit/report/status";
+        $this->createClaimUrl  = $this->asokiUrl;
+        $this->reportUrl       = $this->settings['katm_url']."credit/report";
+        $this->reportStatusUrl = $this->settings['katm_url']."credit/report/status";
+        $this->type            = $this->settings['type'];
+        $this->pHead           = $this->settings['head'];
+        $this->pCode           = $this->settings['code'];
     }
 
     public function inquiry_individual($data){
         $data['claim_id'] = '+000'.$data['claim_id'];
         $json = json_encode([
             'header'    => [
-                'type'  => 'B',
-                "code"  => "00996"
+                'type'  => $this->type, //"B",
+                "code"  => $this->pCode // "00996",
             ],
             'request'   => $data
         ]);
+
         $result = $this->sendRequest($this->createClaimUrl, $json);
         return $result;
     }
@@ -39,10 +46,10 @@ class KatmService
     public function credit_report($claim_id){
         $claim_id = '+000'.$claim_id;
         $data = [
-            "pHead"         => "048",
-            "pCode"         => "00996",
+            "pHead"         => $this->pHead, // "048",
+            "pCode"         => $this->pCode, //"00996",
             "pClaimId"      => $claim_id,
-            "pReportId"     => 001,
+            "pReportId"     => 8,
             "pReportFormat" => 1
         ];
         $json = json_encode([
@@ -56,8 +63,8 @@ class KatmService
     public function credit_report_status($claim_id, $token){
         $claim_id = '+000'.$claim_id;
         $data = [
-            "pHead"         => "048",
-            "pCode"         => "00996",
+            "pHead"         => $this->pHead, //"048",
+            "pCode"         => $this->pCode, //"00996",
             "pToken"        => $token,
             "pClaimId"      => $claim_id,
             "pReportFormat" => 1
@@ -72,8 +79,8 @@ class KatmService
 
     public function credit_claim_decline($info){
         $data = [
-            "pHead"              => "048",
-            "pCode"              => "00996",
+            "pHead"              => $this->pHead, // "048",
+            "pCode"              => $this->pCode, //"00996",
             "pDeclineDate"       => $info['date'],
             "pClaimId"           => '+000'.$info['claim_id'],
             "pDeclineNumber"     => $info['id'],

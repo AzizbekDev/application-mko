@@ -34,7 +34,15 @@ class MyIdInfoObserver
      */
     public function updated(MyIdInfo $myIdInfo)
     {
-        //
+        $application = Application::where([
+            'serial_number' => $myIdInfo->pass_data,
+            'pin'           => $myIdInfo->pinfl,
+        ])->first();
+        if(!$application->applicationInfo->fio){
+            $application->applicationInfo()->update([
+                'fio' => $myIdInfo->full_name
+            ]);
+        }
     }
 
     /**

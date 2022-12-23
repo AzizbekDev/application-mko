@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\TaxInfo;
 use App\Models\MyIdInfo;
+use App\Services\Unired\UniredService;
 use App\Models\SalaryCard;
 use App\Services\Wallet\ClientCreate;
 use Carbon\Carbon;
@@ -64,12 +65,24 @@ class ClientsController extends Controller
                     'balance' => $response['result']['balance'],
                     'status' => $response['result']['status'],
                 ]);
+                $data = [
+                    'key'  => $client->application->key_app,
+                    'card' => $response['result']
+                ];
+                $push = (new UniredService())->send_wallet_push($data);
             }
+            return response()->json([
+                'status' => $client->wallet ? true : false,
+                'info'   => $client->wallet,
+                'push'   => $push,
+                'message'=> 'Success',
+
+            ]);
         }
         return response()->json([
             'status' => $client->wallet ? true : false,
             'info'   => $client->wallet,
-            'message'=> 'Success'
+            'message'=> 'Success',
         ]);
 
     }

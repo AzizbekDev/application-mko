@@ -113,7 +113,38 @@ trait KatmInfo{
         return $creditService;
     }
 
-    public function credit_report_status($data){
-        $creditService = new KatmService();
+    public function credit_report_status($claim_id){
+        $client     = AsokiClient::whereClaimId($claim_id)->latest()->first();
+        if($client->info && is_null($client->info->info) && $client->info->token){
+            $creditService = (new KatmService())->credit_report_status($client->info->claim_id, $client->info->token);
+            if ($creditService && $creditService['code'] == 200) {
+                if ($creditService['data']['result'] == '05000') {
+                    $dataResponse = [
+                        'token'          => $creditService['data']['token'],
+                        'status_id'      => 2,
+                        'status_message' => 'Success',
+                        'info'           => base64_decode($creditService['data']['reportBase64']),
+                        'response_info'  => json_encode([
+                            "data" => [
+                                "result"        => $creditService['data']['result'],
+                                "resultMessage" => $creditService['data']['resultMessage'],
+                                "token"         => $creditService['data']['token'],
+                            ],
+                            "errorMessage"      => $creditService['errorMessage'],
+                            "code"              => $creditService['code'],
+                        ])
+                    ];
+                }else{
+                    $dataResponse = [
+                        'status_id'      => 3,
+                        'status_message' => 'Error',
+                        'response_info'  => json_encode($creditService)
+                    ];
+                }
+                $client->info()->updateOrCreate(['claim_id' => $claim_id],$dataResponse);
+            }
+            return $creditService;
+        }
+        return false;
     }
 }

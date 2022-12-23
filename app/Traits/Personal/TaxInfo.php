@@ -55,12 +55,12 @@ trait TaxInfo{
                         return $company->slice(-6, 6)->avg('salary');
                     })->avg();
                     $application->tax()->update([
-                        'average_salary' => intval($average_salary) / 2
+                        'average_salary' => intval($average_salary)
                     ]);
                     $tax_info->details()->delete();
                     $tax_info->details()->createMany($details->toArray());
                 }
-                return array_merge($response, ['average_salary' => $average_salary]);
+                return array_merge($response, ['average_salary' => $average_salary ?? 0]);
             }
             return [
                 "success" => false,

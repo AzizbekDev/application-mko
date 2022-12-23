@@ -6,13 +6,14 @@ use Illuminate\Http\Request;
 use App\Http\Traits\ValidateMethod;
 use App\Traits\Personal\TaxInfo;
 use App\Traits\Personal\KatmInfo;
+use App\Traits\Scoring\LimitScoring;
 use App\Http\Controllers\Controller;
 use App\Models\KatmScoring;
 use App\Models\Application as ApplicationModel;
 
 class CardInfoController extends Controller
 {
-    use ValidateMethod, TaxInfo, KatmInfo;
+    use ValidateMethod, TaxInfo, KatmInfo, LimitScoring;
     private $application;
 
     public function __construct(ApplicationModel $model)
@@ -45,6 +46,8 @@ class CardInfoController extends Controller
             'expire'        => $request->card_expire,
             'phone'         => $request->phone
         ]);
+        // Credit Report send request
+        $this->credit_report($app_info->asokiClient->id);
         if($app_info->step = 2 && $app_info->status_id >= 6){
             return $this->responseSuccess('10112', 'Scoringdan o\'tdi', [
                 'key_app' => $app_info->key_app,
@@ -59,10 +62,10 @@ class CardInfoController extends Controller
             if($salary_info && array_key_exists('success', $salary_info) && $salary_info['success'] == false) return $this->responseError('10105', $salary_info['reason']);
             if($salary_info && $salary_info['success']){
                 $average_salary = intval($salary_info['average_salary']);
-                if($average_salary != 0 && $average_salary > 2000000){
+                if($average_salary != 0 && $average_salary >= 2000000){
                     $scoring_info = [
                         'salary_average' => $average_salary,
-                            'min_limit'      => $average_salary,
+                            'min_limit'      => $this->get_limit($average_salary, $app_info->applicationInfo->birth_date),
                             'max_limit'      => 26000000
                     ];
                     $app_info->update([

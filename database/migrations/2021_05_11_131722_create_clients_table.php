@@ -24,6 +24,7 @@ class CreateClientsTable extends Migration
                 4-Blocked App"
             );
             $table->string('client_code',9)->nullable();
+            $table->string('client_limit',20)->nullable();
             $table->string('password',20)->nullable();
             $table->string('lang',2)->default('uz')->comment('');
             $table->date('date_pub')->nullable();

@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use App\Http\Traits\ValidateMethod;
 use App\Http\Controllers\Controller;
 use App\Models\Application as ApplicationModel;
+use App\Traits\Personal\KatmInfo;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 
 class ConfirmLimitController extends Controller
 {
-    use ValidateMethod;
+    use ValidateMethod, KatmInfo;
     private $application;
 
     public function __construct(ApplicationModel $model)
@@ -24,13 +25,15 @@ class ConfirmLimitController extends Controller
         $validator = $this->validate_method($request, __FUNCTION__);
         if ($validator->fails()) return $this->responseError('10422', $validator->messages());
         $app_info = $this->application->whereKeyApp($request->key_app)->first();
-
+        
+        $this->credit_report_status($app_info->asokiClient->id);
         if($app_info->step == 4 && $app_info->status_id == 11) return $this->responseSuccess('10204', "Arizangiz qabul qilingan.");
         if($request->confirm){
             $clientInfo = [
                 "password" => Str::random(5),
                 "date_pub" => Carbon::now(),
             ];
+            // Credit Report Status send request
             $app_info->client()->updateOrCreate($clientInfo);
             $app_info->update([
                 "status_id"      => 11,
