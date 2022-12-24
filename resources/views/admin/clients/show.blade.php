@@ -537,6 +537,7 @@
                     client_id: client_id,
                 },
                 success:function (result) {
+                    location.reload();
                     console.log(result);
                 },
                 error:function (err) {

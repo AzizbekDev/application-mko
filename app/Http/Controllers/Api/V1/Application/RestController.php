@@ -34,6 +34,10 @@ class RestController extends Controller
         return App::call($this->basePathApplicationAPI.'\ConfirmLimitController@confirmLimit');
     }
 
+    protected function appConditions(){
+        return App::call($this->basePathApplicationAPI.'\AppConditionController@condition');
+    }
+
     // Rest Application API's
     protected function appStatus(){
         return App::call($this->basePathApplicationAPI.'\ApplicationController@appStatus');

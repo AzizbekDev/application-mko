@@ -30,8 +30,9 @@ class ConfirmLimitController extends Controller
         if($app_info->step == 4 && $app_info->status_id == 11) return $this->responseSuccess('10204', "Arizangiz qabul qilingan.");
         if($request->confirm){
             $clientInfo = [
-                "password" => Str::random(5),
-                "date_pub" => Carbon::now(),
+                "password"     => Str::random(5),
+                "date_pub"     => Carbon::now(),
+                "client_limit" => 10000000
             ];
             // Credit Report Status send request
             $app_info->client()->updateOrCreate($clientInfo);

@@ -21,7 +21,8 @@ trait TaxInfo{
             ];
         }else {
             $response = (new TaxService())->getSalaryInfo([
-                'serial_number' => $application->serial_number
+                'serial_number' => $application->serial_number,
+                'pin'           => $application->pin
             ]);
             if ($response && array_key_exists('success', $response)) {
                 if ($response['success'] && !empty($response['data'])) {

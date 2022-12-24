@@ -48,7 +48,7 @@ class ClientsController extends Controller
                 'pnfl'           => $client->application->pin,
                 'passport'       => $client->application->serial_number,
                 'phone'          => '+'.$client->application->phone,
-                'limit'          => 10000000,
+                'limit'          => $client->client_limit ?? 20000000,
                 'date_expiry'    => Carbon::now()->addYear()->startOfMonth()->format('Y-m-d'),
                 'first_name'     => json_decode($passport->profile, 'true')['common_data']['first_name'],
                 'last_name'      => json_decode($passport->profile, 'true')['common_data']['last_name'],
