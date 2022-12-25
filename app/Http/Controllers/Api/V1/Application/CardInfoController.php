@@ -49,18 +49,18 @@ class CardInfoController extends Controller
         // Credit Report send request
         $this->credit_report($app_info->asokiClient->id);
         if($app_info->step = 2 && $app_info->status_id >= 6){
-            return $this->responseSuccess('10112', 'Scoringdan o\'tdi', [
+            return $this->responseSuccess('30112', 'Arizangiz ma\'qullandi.', [
                 'key_app' => $app_info->key_app,
                 'data'    => [
                     'salary_average' => $this->getAverageSalary(['serial_number' => $app_info->serial_number]),
-                        'min_limit'  => $this->getAverageSalary(['serial_number' => $app_info->serial_number]),
+                        'min_limit'  => $this->get_limit($this->getAverageSalary(['serial_number' => $app_info->serial_number]), $app_info->applicationInfo->birth_date),
                         'max_limit'  => 26000000
                     ]
                 ]);
         }else{
             $salary_info = $this->getTaxSalaryInfo($app_info->id);
-            if($salary_info && array_key_exists('success', $salary_info) && $salary_info['success'] == false) return $this->responseError('10105', $salary_info['reason']);
-            if($salary_info && $salary_info['success']){
+            if($salary_info && $salary_info['success'] == false) return $this->responseError('30107', $salary_info['reason']);
+            if($salary_info && $salary_info['success'] == true){
                 $average_salary = intval($salary_info['average_salary']);
                 if($average_salary != 0 && $average_salary >= 2000000){
                     $scoring_info = [
@@ -73,7 +73,7 @@ class CardInfoController extends Controller
                         'status_id' => 6,
                         'status_message' => 'Salary Scoring Success'
                     ]);
-                    return $this->responseSuccess('10111', 'Scoringdan o\'tdi', [
+                    return $this->responseSuccess('30112', 'Arizangiz ma\'qullandi.', [
                         'key_app' => $app_info->key_app,
                         'data'    => $scoring_info
                     ]);
@@ -83,7 +83,7 @@ class CardInfoController extends Controller
                         'status_id'      => 5,
                         'status_message' => 'Salary Scoring Error'
                     ]);
-                    return $this->responseError('10112', 'Scoringdan o\'tmadi', [
+                    return $this->responseError('301071', 'Oylik ish haqi shartlarga javob bermaydi.', [
                         'key_app' => $app_info->key_app,
                         'data'    => [
                             'salary_average' => $average_salary,
@@ -93,7 +93,7 @@ class CardInfoController extends Controller
                     ]);
                 }
             }else{
-                return $this->responseError('10112', 'Scoringdan o\'tmadi', [
+                return $this->responseError('30108', 'Serverda xatolik bor boshqatdan urunib ko\'ring!', [
                     'key_app' => $app_info->key_app,
                     'data'    => [
                         'salary_average' => $this->getAverageSalary([

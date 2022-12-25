@@ -16,6 +16,11 @@ Route::group([
     'namespace'  => 'Api\V1\Application',
     'middleware' => ['auth.partner']], function () {
     Route::post('rest', 'RestController@index');
+    Route::post('condition', 'ConditionInfoController@index');
+});
+// Application Conditions For Mobile Server
+Route::group(['namespace'  => 'Api\V1\Application'], function () {
+    Route::get('condition', 'ConditionInfoController@index');
 });
 
 // Tax Services

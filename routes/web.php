@@ -1,19 +1,5 @@
 <?php
-use Carbon\Carbon;
-Route::get('/test-myid', function () {
-    dd(Carbon::parse('01.02.1993')->format('Y-m-d'));
-//    dd((new App\Services\MyIdService())->getPassportInfo('7c41c6cb-2187-4760-b380-c34f9f24b4d2'));
-    });
-Route::get('/test-tax', function () {
-//    TaxService Test
-    dd((new App\Services\TaxService())->getSalaryInfo([
-        'serial_number' => 'AA6009200'
-    ]));
-});
 
-Route::get('/test-katm', function () {
-    dd((new App\Services\Katm\KatmService())->credit_report());
-});
 Route::redirect('/', '/login');
 Route::get('/home', function () {
     if (session('status')) {
@@ -44,14 +30,19 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('search', 'SearchController@index');
     Route::post('search', 'SearchController@show')->name('application.search');
     Route::get('reports', 'ReportsController@index')->name('application.reports');
+
     // Brands
     Route::resource('brands', 'BrandsController')->only(['index', 'show']);
+
     // Merchants
     Route::resource('merchants', 'MerchantsController')->only(['index', 'show']);
+
     // Merchant Periods
     Route::resource('merchant-periods', 'MerchantPeriodsController')->only(['index', 'show']);
+
     //Settings
     Route::resource('settings', 'SettingsController');
+
     // Applications
     Route::get('applications', 'ApplicationsController@index')->name('applications.index');
     Route::get('applications/new', 'ApplicationsController@new')->name('applications.new');
@@ -59,6 +50,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('applications/approved', 'ApplicationsController@approved')->name('applications.approved');
     Route::get('applications/rejected', 'ApplicationsController@rejected')->name('applications.rejected');
     Route::get('applications/blocked', 'ApplicationsController@blocked')->name('applications.blocked');
+
     // Clients
     Route::get('clients', 'ClientsController@index')->name('clients.index');
     Route::get('client/info/{client}', 'ClientsController@show')->name('clients.show');
