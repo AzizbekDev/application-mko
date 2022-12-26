@@ -30,6 +30,11 @@ class Client extends Model
     }
 
     // Scopes
+    public function scopeStatus($query, $status_id)
+    {
+        return $query->where('status_id', '=', $status_id);
+    }
+
     public function scopeStatusApp($query, $status_id)
     {
         return $query->where('status_app_id', '=', $status_id);

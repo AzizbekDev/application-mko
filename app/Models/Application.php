@@ -83,8 +83,4 @@ class Application extends Model
     public function asokiClient(){
         return $this->hasOne(AsokiClient::class, 'claim_id', 'id');
     }
-//    public function personalInfo()
-//    {
-//        return $this->hasOne(PersonalInfo::class, 'pin', 'pin');
-//    }
 }

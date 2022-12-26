@@ -20,7 +20,7 @@
                                     <div class="modal-body">
                                         <div class="form-group row align-items-center">
                                             <div class="col-3">
-                                                <h6>ID_клиентa</h6>
+                                                <h6>Client ID</h6>
                                             </div>
                                             <div class="col-3">
                                                 <select class="form-control form-control-sm" name="client_id_operator">
@@ -116,11 +116,11 @@
                     <th>AppID</th>
                     <th>ФИО</th>
                     <th>Телефон</th>
-                    <th>Паспорт</th>
-                    <th>Зарплатная карта</th>
                     <th>Состояние</th>
+                    <th>Причина отказа</th>
                     <th>Партнер</th>
                     <th>Дата заявки</th>
+                    <th>Дата отклонения</th>
                     <th>Действия</th>
                 </tr>
                 </thead>
@@ -139,25 +139,25 @@
                             {{ $application->application->phone }}
                         </td>
                         <td class="text-center" style="vertical-align: middle">
-                            {{ $application->application->serial_number }}
+                            {{ $application->status_app_name }}
+                        </td>
+                        <td class="text-center" style="vertical-align: middle;">
+                            <span class="text-danger">Test uchun otmena qilindi</span>
                         </td>
                         <td class="text-center" style="vertical-align: middle">
-                            {{ $application->application->card_mask }}
-                        </td>
-                        <td class="text-center" style="vertical-align: middle">
-                            {{ $application->status_app_id }}
-                        </td>
-                        <td class="text-center" style="vertical-align: middle">
-                        <span class="badge text-white" style="vertical-align: middle; background-color: {{ $application->application->partnerInfo->color }};">
+                        <span class="badge text-white" style="vertical-align: middle; background-color: {{ $application->application->partnerInfo->color ?? 'red' }};">
                             {{ $application->application->partnerInfo->name  }}
                         </span>
                         </td>
                         <td class="text-center text-info" style="vertical-align: middle">
-                            {!! $application->date_pub." <br/> ". $application->created_at->diffForHumans() !!}
+                            {!! \Carbon\Carbon::parse($application->date_pub)->format('d-m-Y')." <br/> ". $application->created_at->diffForHumans() !!}
+                        </td>
+                        <td class="text-center text-info" style="vertical-align: middle">
+                            {!! $application->updated_at->format('d-m-Y h:i:s')." <br/> ". $application->updated_at->diffForHumans() !!}
                         </td>
                         <td class="text-center" style="vertical-align: middle">
                             <div class="btn-group">
-                                <a href="#" class="btn btn-outline-info btn-sm">Детали</a>
+                                <a href="{{ route('admin.clients.show', $application->id) }}" class="btn btn-outline-info btn-sm">Детали</a>
                             </div>
                         </td>
                     </tr>

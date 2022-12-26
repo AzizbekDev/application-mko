@@ -11,7 +11,7 @@ if (!function_exists('decimal_price_format')) {
 if (!function_exists('price_format')) {
     function price_format($price)
     {
-        return number_format((int)$price, 0, ",", ".");
+        return number_format((int)$price, 0, ",", " ");
     }
 }
 

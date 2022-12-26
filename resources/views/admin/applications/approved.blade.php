@@ -20,7 +20,7 @@
                                     <div class="modal-body">
                                         <div class="form-group row align-items-center">
                                             <div class="col-3">
-                                                <h6>ID_клиентa</h6>
+                                                <h6>Client ID</h6>
                                             </div>
                                             <div class="col-3">
                                                 <select class="form-control form-control-sm" name="client_id_operator">
@@ -145,10 +145,10 @@
                             {{ $application->application->card_mask }}
                         </td>
                         <td class="text-center" style="vertical-align: middle">
-                            {{ $application->status_app_id }}
+                            {{ $application->status_app_name }}
                         </td>
                         <td class="text-center" style="vertical-align: middle">
-                        <span class="badge text-white" style="vertical-align: middle; background-color: {{ $application->application->partnerInfo->color }};">
+                        <span class="badge text-white" style="vertical-align: middle; background-color: {{ $application->application->partnerInfo->color ?? 'red' }};">
                             {{ $application->application->partnerInfo->name  }}
                         </span>
                         </td>
@@ -157,7 +157,7 @@
                         </td>
                         <td class="text-center" style="vertical-align: middle">
                             <div class="btn-group">
-                                <a href="#" class="btn btn-outline-info btn-sm">Детали</a>
+                                <a href="{{ route('admin.clients.show', $application->id) }}" class="btn btn-outline-info btn-sm">Детали</a>
                             </div>
                         </td>
                     </tr>

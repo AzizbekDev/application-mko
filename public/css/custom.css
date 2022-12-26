@@ -133,3 +133,13 @@ table.dataTable thead .sorting_desc {
     color: #A9A9A9;
     opacity: 0.8;
 }
+
+/*for displaying flash message*/
+div.box-flash{
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    z-index: 10;
+    border: none;
+    background: none;
+}

@@ -55,6 +55,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('clients', 'ClientsController@index')->name('clients.index');
     Route::get('client/info/{client}', 'ClientsController@show')->name('clients.show');
     Route::post('client/wallet-create', 'ClientsController@createWallet')->name('clients.wallet.create');
+    Route::post('client/reject', 'ClientsController@reject')->name('clients.reject');
+    Route::post('client/status-change', 'ClientsController@statusChange')->name('clients.status.change');
 });
 
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {

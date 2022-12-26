@@ -4,7 +4,7 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title float-left">{{ trans('global.list') }} {{ trans('cruds.clients.title') }}</h3>
-            <span class="badge badge-light py-2">Количество : 26513</span>
+            <span class="badge badge-light py-2">Количество : {{ $clients->count() ?? 0 }}</span>
             <div class="card-tools">
                 <form action="" method="get">
                     <div class="btn-group">
@@ -112,20 +112,62 @@
         <div class="card-body">
             <table class="table table-bordered table-striped table-responsive-lg">
                 <thead>
-                    <tr class="text-center">
-                        <th>ClientID</th>
-                        <th>ФИО</th>
-                        <th>Телефон</th>
-                        <th>Паспорт</th>
-                        <th>Зарплатная карта</th>
-                        <th>Состояние</th>
-                        <th>Партнер</th>
-                        <th>Дата заявки</th>
-                        <th>Действия</th>
-                    </tr>
+                <tr class="text-center">
+                    <th>Client ID</th>
+                    <th>ФИО</th>
+                    <th>Телефон</th>
+                    <th>Паспорт</th>
+                    <th>Зарплатная карта</th>
+                    <th>Состояние</th>
+                    <th>Партнер</th>
+                    <th>Дата заявки</th>
+                    <th>Действия</th>
+                </tr>
                 </thead>
                 <tbody>
-
+                @forelse($clients as $client)
+                    <tr id="{{ 'tr_'.$client->id }}">
+                        <td class="text-center" style="vertical-align: middle">
+                            {{ $client->application->id }}
+                        </td>
+                        <td style="vertical-align: middle">
+                            <a href="#" style="color: black">
+                                {{ mb_strtoupper($client->application->applicationInfo->fio) }}
+                            </a>
+                        </td>
+                        <td class="text-center" style="vertical-align: middle">
+                            {{ $client->application->phone }}
+                        </td>
+                        <td class="text-center" style="vertical-align: middle">
+                            {{ $client->application->serial_number }}
+                        </td>
+                        <td class="text-center" style="vertical-align: middle">
+                            {{ $client->application->card_mask }}
+                        </td>
+                        <td class="text-center" style="vertical-align: middle">
+                            {{ $client->status_app_name }}
+                        </td>
+                        <td class="text-center" style="vertical-align: middle">
+                        <span class="badge text-white" style="vertical-align: middle; background-color: {{ $application->application->partnerInfo->color ?? "red" }};">
+                            {{ $client->application->partnerInfo->name  }}
+                        </span>
+                        </td>
+                        <td class="text-center text-info" style="vertical-align: middle">
+                            {!! \Carbon\Carbon::parse($client->date_pub)->format('d-m-Y')." <br/> ". $client->created_at->diffForHumans() !!}
+                        </td>
+                        <td class="text-center" style="vertical-align: middle">
+                            <div class="btn-group">
+                                <a href="{{ route('admin.clients.show', $client->id) }}" class="btn btn-outline-info btn-sm">Детали</a>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="9" style="vertical-align: middle">
+                            <p class="text-center">Clients empty</p>
+                        </td>
+                    </tr>
+                @endforelse
                 </tbody>
             </table>
         </div>
