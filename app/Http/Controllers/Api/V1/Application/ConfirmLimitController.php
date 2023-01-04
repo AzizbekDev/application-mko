@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api\V1\Application;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Http\Traits\ValidateMethod;
 use App\Http\Controllers\Controller;
 use App\Models\Application as ApplicationModel;
 use App\Traits\Personal\KatmInfo;
-use Illuminate\Support\Str;
 use Carbon\Carbon;
 
 class ConfirmLimitController extends Controller
@@ -27,7 +27,7 @@ class ConfirmLimitController extends Controller
         $app_info = $this->application->whereKeyApp($request->key_app)->first();
         
         $this->credit_report_status($app_info->asokiClient->id);
-        if($app_info->step == 4 && $app_info->status_id == 11) return $this->responseSuccess('10204', "Arizangiz qabul qilingan.");
+        if($app_info->step == 4 && $app_info->status_id == 11) return $this->responseSuccess('10000', get_code_message('10000'));
         if($request->confirm){
             $clientInfo = [
                 "password"     => Str::random(5),
@@ -41,14 +41,15 @@ class ConfirmLimitController extends Controller
                 "status_message" => "Client Opened",
                 "step"           => 4 // Success Application
             ]);
-            return $this->responseSuccess('10201', "Arizangiz qabul qilindi.");
+            return $this->responseSuccess('40100', get_code_message('40100'
+            ));
         }else{
             $app_info->update([
                 "status_id"      => 12,
                 "status_message" => "Client Rejected",
                 "step"           => 3 // Success Application
             ]);
-            return $this->responseSuccess('10203', "Arizangiz bekor qilindi.");
+            return $this->responseSuccess('40102', get_code_message('40102'));
         }
 
     }

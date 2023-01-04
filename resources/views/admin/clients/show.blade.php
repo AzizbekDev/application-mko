@@ -373,7 +373,7 @@
            <div class="col-md-12">
                <div class="card">
                    <div class="card-header">
-                       <h3 class="card-title">Налоговый скоринг</h3>
+                       <h3 class="card-title">Налоговая информация</h3>
                    </div>
                    <div class="card-body">
                        <table class="table table-bordered text-center">
@@ -388,25 +388,32 @@
                                <th width="40px;">Действие</th>
                            </tr>
                            </thead>
-                           <tbody id="card_table_body aligin-middle">
+                           <tbody>
+                           @if($tax_info)
                            <tr id="row_{{ $tax_info->id }}">
-                               <td class="v-a">{{ $tax_info->id }}</td>
-                               <td class="v-a">{{ $tax_info->serial_number }}</td>
-                               <td class="v-a">{{ $tax_info->tin }}</td>
-                               <td class="v-a">{{ $tax_info->pinfl }}</td>
-                               <td class="v-a">{{ price_format($tax_info->average_salary ?? 0) }}&nbsp;UZS</td>
-                               <td class="v-a text-success">{{ $tax_info->status_name ?? 'no method' }}</td>
+                               <td>{{ $tax_info->id }}</td>
+                               <td>{{ $tax_info->serial_number }}</td>
+                               <td>{{ $tax_info->tin }}</td>
+                               <td>{{ $tax_info->pinfl }}</td>
+                               <td class="text-info">{{ price_format($tax_info->average_salary ?? 0) }}&nbsp;UZS</td>
+                               <td class="v-a {{ ($tax_info->status_id == 1) ? 'text-success' : 'text-danger' }}">
+                                   {{ $tax_info->status_name }}
+                               </td>
                                <td class="v-a">
                                    <div class="btn-group pb-1">
                                        <button type="button" class="btn btn-sm btn-success update">
                                            <i class="fa fa-sync"></i>
                                        </button>
-                                       <button type="button" class="btn btn-sm btn-info">
+                                       <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_tax_{{$tax_info->id}}">
                                            <i class="fa fa-eye"></i>
                                        </button>
+                                       @include('admin.clients.actions.tax_info', $tax_info)
                                    </div>
                                </td>
                            </tr>
+                           @else
+                               <p>Tax Info Not Found</p>
+                           @endif
                            </tbody>
                        </table>
                    </div>
@@ -415,7 +422,7 @@
            <div class="col-md-12">
                <div class="card">
                    <div class="card-header">
-                       <h3 class="card-title">Кредитный скоринг</h3>
+                       <h3 class="card-title">Кредитная информация</h3>
                    </div>
                    <div class="card-body">
                        <table class="table table-bordered text-center">
@@ -432,11 +439,14 @@
                            </thead>
                            <tbody id="card_table_body aligin-middle">
                            <tr id="row_{{ $asoki_client->claim_id }}">
-                               <td class="v-a">{{ $asoki_client->claim_id }}</td>
+                               <td class="v-a">{{ $asoki_client->id }}</td>
+                               <td class="v-a">{{ '+000'.$asoki_client->claim_id }}</td>
                                <td class="v-a">{{ $asoki_client->full_name }}</td>
                                <td class="v-a">{{ $asoki_client->claim_date }}</td>
                                <td class="v-a">{{ $asoki_client->katm_sir ?? 'Empty' }}</td>
-                               <td class="v-a">{{ $asoki_client->status_name }}</td>
+                               <td class="v-a {{ ($asoki_client->status_id == 2) ? 'text-success' : 'text-danger' }}">
+                                   {{ $asoki_client->status_name }}
+                               </td>
                                <td class="v-a">
                                    <div class="btn-group pb-1">
                                        <button type="button" class="btn btn-sm btn-success update">

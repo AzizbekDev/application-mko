@@ -65,7 +65,7 @@ trait TaxInfo{
             }
             return [
                 "success" => false,
-                "reason"  => "Tax service not working...",
+                "reason"  => "Tax service not working.",
                 "data"    => null
             ];
         }

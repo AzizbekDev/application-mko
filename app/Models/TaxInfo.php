@@ -33,4 +33,9 @@ class TaxInfo extends Model
     {
         return $this->hasOne(ApplicationInfo::class, 'pin', 'pinfl');
     }
+
+    public function getStatusNameAttribute(){
+        $statues = ["New Info", "Success", "Null Salary", "Error Service"];
+        return $statues[$this->status_id];
+    }
 }

@@ -33,8 +33,10 @@ class IdentifiedClientInfoController extends Controller
         ]);
         // Check application with @CheckApp trait
         $inspections = $this->checkApplication($request);
-        if(!empty($inspections)) return $this->responseError($inspections['code'], $inspections['message']);
+
+        if(!empty($inspections)) return $this->responseError($inspections['code'], get_code_message($inspections['code']));
         $valid_data = $request->all();
+
         // Application's validated data update or create
         $app_info = $this->application->updateOrCreateApp($valid_data);
 
@@ -51,7 +53,8 @@ class IdentifiedClientInfoController extends Controller
                         'status_id'     => 2, // Identification success,
                         'step'          => 1  // MyId Identification
                     ]);
-                    return $this->responseSuccess('10100','Arizangiz identifikatiya qilindi',[
+                    //Code: 10100 - en => Your application has been identified.
+                    return $this->responseSuccess('10100', get_code_message('10100'),[
                         'app_is_identified' => $app_info->is_identified ? true : false,
                         'key_app'           => $app_info->key_app
                     ]);
@@ -61,14 +64,16 @@ class IdentifiedClientInfoController extends Controller
                         'status_id'     => 2, // Identification success,
                         'step'          => 1  // MyId Identification
                     ]);
-                    return $this->responseSuccess('10203','Passport ma\'lumot to\'liq emas.',[
+                    //Code: 10101 - en => Passport information is incomplete.
+                    return $this->responseSuccess('10101', get_code_message('10101'),[
                         'app_is_identified' => $app_info->is_identified ? true : false,
                         'key_app'           => $app_info->key_app
                     ]);
                 }
             }
         }
-        return $this->responseSuccess('10101','Ushbu ariza identifikatiyadan o\'tgan',[
+        //Code: 10102 - en => Your application has been identified already.
+        return $this->responseSuccess('10102',get_code_message('10102'),[
             'app_is_identified' => $app_info->is_identified ? true : false,
             'key_app'           => $app_info->key_app
         ]);

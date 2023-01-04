@@ -120,122 +120,114 @@ if (!function_exists('date_local_format')) {
         return $date->format('Y-m-d H:i');
     }
 }
+if (!function_exists('get_message')) {
+    function get_message($code,$value = []){
+        return [
+            'uz' => trans("codes.{$code}", $value, 'uz'),
+            'ru' => trans("codes.{$code}", $value, 'ru'),
+            'en' => trans("codes.{$code}", $value, 'en')
+        ];
+    }
+}
+
 
 if (!function_exists('get_code_message')) {
-    function get_code_message($code, $lang = 'uz')
+    function get_code_message($code)
     {
         $codes = [
             '10000' => [
-                'uz' => 'Bunday zayafka mavjud!',
-                'ru' => 'Заявка уже есть!',
-                'en' => 'Such an application is available!'
+                'uz' => 'Bunday ariza mavjud.',
+                'ru' => 'Заявка уже есть.',
+                'en' => 'Such an application is available.'
+            ],
+            '10001' => [
+                'uz' => 'Arizangiz avval rad qilingan.',
+                'ru' => 'Ваша заявка ранее была отклонена.',
+                'en' => 'Your application was previously rejected.'
+            ],
+            '10002' => [
+                'uz' => 'Arizangiz blocklangan.',
+                'ru' => 'Ваше приложение заблокировано.',
+                'en' => 'Your application has been blocked.'
+            ],
+            '10003' => [
+                'uz' => 'Tug\'ilgan sana shartlarga mos kelmadi.',
+                'ru' => 'Дата рождения не соответствует условиям.',
+                'en' => 'Date of birth did not match the conditions.'
+            ],
+            '10004' => [
+                'uz' => 'Arizangiz rad qilindi.',
+                'ru' => 'Ваша заявка отклонена.',
+                'en' => 'Your application has been rejected.'
+            ],
+            '10005' => [
+                'uz' => 'Bunday ariza UNIREDda mavjud.',
+                'ru' => 'Заявка уже есть на UNIRED.',
+                'en' => 'Such an application is available at UNIRED.'
+            ],
+            '10006' => [
+                'uz' => 'Bunday ariza mavjud emas.',
+                'ru' => 'Заявка не существует.',
+                'en' => 'Application not found'
             ],
             '10100' => [
-                'uz' => 'Passport ma\'lumotlari saqlandi!',
-                'ru' => 'Паспортная информация сохранена!',
-                'en' => 'Passport information is saved!'
+                'uz' => 'Arizangiz identifikatiya qilindi.',
+                'ru' => 'Ваша заявка было идентифицировано.',
+                'en' => 'Your application has been identified.'
             ],
-            '10111' => [
-                'uz' => 'Tug\'ilgan sanasi mos kelmadi!',
-                'ru' => 'Дата рождения не совпадает!',
-                'en' => 'Date of birth did not match!'
+            '10101' => [
+                'uz' => 'Passport ma\'lumot to\'liq emas.',
+                'ru' => 'Паспортные данные неполные.',
+                'en' => 'Passport information is incomplete.'
             ],
-            '10113' => [
-                'uz' => 'Passport ma\'lumotlari topilmadi!',
-                'ru' => 'Паспортная информация не найдена!',
-                'en' => 'Passport information not found!'
+            '10102' => [
+                'uz' => 'Arizangiz identifikatiya qilingan.',
+                'ru' => 'Ваша заявка было идентифицировано.',
+                'en' => 'Your application has been identified already.'
             ],
-            '20100' => [
-                'uz' => 'Passport ma\'lumotlari mavjud!',
-                'ru' => 'Паспортная информация доступна!',
-                'en' => 'Passport information is available!'
-            ],
-            '20101' => [
-                'uz' => 'Passport ma\'lumotlari saqlandi!',
-                'ru' => 'Паспортная информация сохранена!',
-                'en' => 'Passport information saved!'
-            ],
-            '30101' => [
-                'uz' => 'Kartada yetarlicha mablag\' mavjud emas!',
-                'ru' => 'There is not enough money on the card!',
-                'en' => 'На карте недостаточно денег!'
-            ],
-            '30102' => [
-                'uz' => 'Karta holati faol emas!',
-                'ru' => 'Статус карты не активен!',
-                'en' => 'Card status is not active!'
-            ],
-            '30103' => [
-                'uz' => 'Korporativ kartalar qabul qilinmaydi!',
-                'ru' => 'Корпоративных карт не принимаются!',
-                'en' => 'Corporate cards are not accepted!'
-            ],
-            '30104' => [
-                'uz' => 'Kartaga telefon raqam noto\'g\'ri ulangan!',
-                'ru' => 'Номер телефона неправильно привязан к карте!',
-                'en' => 'The phone number is incorrectly connected to the card!'
-            ],
-            '30105' => [
-                'uz' => 'Kartaga bo\'g\'langan telefon raqam kiritilgan raqam bilan mos kelmadi!',
-                'ru' => 'Номер телефона, прикрепленный к карте, не соответствует введенному номеру!',
-                'en' => 'The phone number attached to the card did not match the number entered!'
-            ],
-            '30106' => [
-                'uz' => 'Karta raqami noto\'g\'ri!',
-                'ru' => 'Номер карты неверный!',
-                'en' => 'The card number is incorrect!'
-            ],
-            '30107' => [
-                'uz' => 'Karta scoringdan o\'tmadi! To\'liqroq ma\'lumot uchun call-centerga murojaat qiling +998(71)200-11-10!',
-                'ru' => 'Карта не прошла от скориг! За дополнительной информацией обращайтесь в колл-центр +998(71)200-11-10!',
-                'en' => 'The card did not pass from the scorig! For more information contact the call center +998(71)200-11-10!'
-            ],
-            '30108' => [
+            '11111' => [
                 'uz' => 'Serverda xatolik bor boshqatdan urunib ko\'ring!',
                 'ru' => 'На сервере произошла ошибка, попробуйте еще раз!',
                 'en' => 'An error occurred on the server, please try again!'
             ],
             '30109' => [
-                'uz' => 'Karta scoringdan o\'tmadi!',
-                'ru' => 'Карта не прошла  от скориг!',
-                'en' => 'The card did not go through scoring!'
+                'uz' => 'Oylik maosh ma\'lumoti topilmadi.',
+                'ru' => 'Информация о месячной зарплате не найдена.',
+                'en' => 'Monthly salary information not found.'
             ],
             '30110' => [  // sariq
                 'uz' => 'Ariza ko\'rib chiqishga tavfsiya etildi!',
                 'ru' => 'Заявка была рекомендована к рассмотрению!',
-                'en' => 'The application was recommended for consideration!'
+                'en' => 'Application recommended for consideration!'
             ],
             '30111' => [ // qizil
                 'uz' => 'Ariza kredit tarixi sababli rad etildi!',
                 'ru' => 'Заявка отклонена из-за кредитной истории!',
-                'en' => 'The application was rejected due to credit history!!'
+                'en' => 'Application rejected due to credit history!'
             ],
             '30112' => [ // yashil
-                'uz' => 'Arizangiz ma\'qullandi!',
-                'ru' => 'Ваша заявка одобрена!',
-                'en' => 'Your application has been approved!'
+                'uz' => 'Ariza muvaffaqiyatli tasdiqlandi.',
+                'ru' => 'Заявка одобрена успешно.',
+                'en' => 'Application approved successfully.'
             ],
-            '60102' => [
-                'uz' => 'Ariza topilmadi!',
-                'ru' => 'Заявка не найдено!',
-                'en' => 'Application wasn\'t found!'
+            '30113' => [
+                'uz' => 'Ariza oylik maoshi kamligi sababli rad etildi.',
+                'ru' => 'Заявка отклонена из-за низкой месячной заработной платы.',
+                'en' => 'Application rejected due to low monthly salary.'
             ],
-            '90101' => [
-                'uz' => 'Passport ma\'lumotlari topilmadi!',
-                'ru' => 'Паспортная информация не найдена!',
-                'en' => 'Passport information not found!'
+            '40100'  => [
+                'uz' => 'Ariza qabul qilindi.',
+                'ru' => 'Заявка принята.',
+                'en' => 'Application accepted.'
             ],
-            '90102' => [
-                'uz' => 'Passport ma\'lumotlari mavjud!',
-                'ru' => 'Паспортная информация доступна!',
-                'en' => 'Passport information is available!'
+            '40102'  => [
+                'uz' => 'Ariza rad etildi.',
+                'ru' => 'Заявка отменено.',
+                'en' => 'Application canceled.'
             ],
-
-
         ];
 
-
-        return $codes[$code][$lang];
+        return $codes[$code];
     }
 }
 

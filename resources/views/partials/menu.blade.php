@@ -114,26 +114,26 @@
                                     </a>
                                 </li>
                             @endcan
-                            @can('merchants_access')
-                                <li class="nav-item">
-                                    <a href="{{ route("admin.merchants.index") }}" class="nav-link {{ request()->is("admin/merchants") || request()->is("admin/merchants/*") ? "active" : "" }}">
-                                        <i class="fa-fw nav-icon fa fa-users"></i>
-                                        <p>
-                                            {{ trans('cruds.merchants.title') }}
-                                        </p>
-                                    </a>
-                                </li>
-                            @endcan
-                            @can('merchant_periods_access')
-                                <li class="nav-item">
-                                    <a href="{{ route("admin.merchant-periods.index") }}" class="nav-link {{ request()->is("admin/merchant-periods") || request()->is("admin/merchant-periods/*") ? "active" : "" }}">
-                                        <i class="fa-fw nav-icon fa fa-users"></i>
-                                        <p>
-                                            {{ trans('cruds.merchantPeriods.title') }}
-                                        </p>
-                                    </a>
-                                </li>
-                            @endcan
+{{--                            @can('merchants_access')--}}
+{{--                                <li class="nav-item">--}}
+{{--                                    <a href="{{ route("admin.merchants.index") }}" class="nav-link {{ request()->is("admin/merchants") || request()->is("admin/merchants/*") ? "active" : "" }}">--}}
+{{--                                        <i class="fa-fw nav-icon fa fa-users"></i>--}}
+{{--                                        <p>--}}
+{{--                                            {{ trans('cruds.merchants.title') }}--}}
+{{--                                        </p>--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                            @endcan--}}
+{{--                            @can('merchant_periods_access')--}}
+{{--                                <li class="nav-item">--}}
+{{--                                    <a href="{{ route("admin.merchant-periods.index") }}" class="nav-link {{ request()->is("admin/merchant-periods") || request()->is("admin/merchant-periods/*") ? "active" : "" }}">--}}
+{{--                                        <i class="fa-fw nav-icon fa fa-users"></i>--}}
+{{--                                        <p>--}}
+{{--                                            {{ trans('cruds.merchantPeriods.title') }}--}}
+{{--                                        </p>--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                            @endcan--}}
                         </ul>
                     </li>
                 @endcan

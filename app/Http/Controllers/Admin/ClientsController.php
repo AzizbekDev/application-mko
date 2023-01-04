@@ -24,11 +24,14 @@ class ClientsController extends Controller
     }
 
     public function show(Request $request, Client $client){
-        $application = $client->load([
-                'application',
-                'application.applicationInfo',
-                'application.partnerInfo'
-        ])->application;
+//        $application = $client->load([
+//                'application',
+//                'application.applicationInfo',
+//                'application.partnerInfo',
+//                'application.tax',
+//                'application.asokiClient'
+//        ])->application;
+        $application      = $client->application;
         $wallet           = $client->wallet;
         $application_info = $application->applicationInfo;
         $salary_cards     = $application->salaryCards;
@@ -150,6 +153,4 @@ class ClientsController extends Controller
         ]);
 
     }
-
-
 }
