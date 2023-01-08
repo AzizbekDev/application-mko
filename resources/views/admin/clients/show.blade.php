@@ -452,9 +452,10 @@
                                        <button type="button" class="btn btn-sm btn-success update">
                                            <i class="fa fa-sync"></i>
                                        </button>
-                                       <button type="button" class="btn btn-sm btn-info">
+                                       <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_katm_{{$asoki_client->id}}">
                                            <i class="fa fa-eye"></i>
                                        </button>
+                                       @include('admin.clients.actions.katm_info', ['info' => $asoki_client])
                                    </div>
                                </td>
                            </tr>

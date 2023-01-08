@@ -1,6 +1,7 @@
 <?php
 return [
     '11111' => 'Server error, please try again.',
+    '11101' => 'Application temporarily suspended.',
     '10000' => 'Application is available.',
     '10001' => 'Application was previously rejected.',
     '10002' => 'Application has been blocked.',

@@ -25,7 +25,6 @@ class ConfirmLimitController extends Controller
         $validator = $this->validate_method($request, __FUNCTION__);
         if ($validator->fails()) return $this->responseError('10422', $validator->messages());
         $app_info = $this->application->whereKeyApp($request->key_app)->first();
-        
         $this->credit_report_status($app_info->asokiClient->id);
         if($app_info->step == 4 && $app_info->status_id == 11) return $this->responseSuccess('10000', get_code_message('10000'));
         if($request->confirm){

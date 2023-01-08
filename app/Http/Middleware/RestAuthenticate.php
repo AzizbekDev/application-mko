@@ -43,7 +43,7 @@ class RestAuthenticate
                 ->where([['login', '=', $login], ['password', '=', $password]])
                 ->first();
             if (!$user) {
-                return $this->responseError('-1012','Your account is not active or blocked!');
+                return $this->responseError('11101',get_message('11101')); // Rest user is active
             }
             $user_id = $user->id;
 

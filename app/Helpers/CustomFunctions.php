@@ -419,6 +419,23 @@ if(!function_exists('get_card_type')){
     }
 }
 
+if(!function_exists('get_tax_periods')){
+    function get_tax_periods($filter, $period = 7){
+        $periods   = now()->subMonths($period)->monthsUntil(now());
+        $data     = [];
+        foreach ($periods as $date)
+        {
+            $data[] = [
+                'month' => $date->month,
+                'year'  => $date->year,
+            ];
+        }
+        if($filter == 'year') return array_unique(array_column($data,'year'));
+        if($filter == 'month') return array_unique(array_column($data,'month'));
+        return $data;
+    }
+}
+
 if(!function_exists('send_sms')){
     function send_sms($phone, $content){
         return (new App\Services\Unired\SendUniredSms)->apply($phone, $content);

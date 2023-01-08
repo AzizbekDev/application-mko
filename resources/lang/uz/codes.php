@@ -1,6 +1,7 @@
 <?php
 return [
     '11111' => 'Serverda xatolik, qayta urinib koʻring.',
+    '11101' => 'Ariza qabul qilish vaqtinchalik to\'xtatilgan.',
     '10000' => 'Bunday ariza mavjud.',
     '10001' => 'Ariza avval rad qilingan.',
     '10002' => 'Ariza blocklangan.',

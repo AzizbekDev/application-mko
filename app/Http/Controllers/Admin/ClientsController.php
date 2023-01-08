@@ -24,19 +24,22 @@ class ClientsController extends Controller
     }
 
     public function show(Request $request, Client $client){
-//        $application = $client->load([
-//                'application',
-//                'application.applicationInfo',
-//                'application.partnerInfo',
-//                'application.tax',
-//                'application.asokiClient'
-//        ])->application;
         $application      = $client->application;
         $wallet           = $client->wallet;
         $application_info = $application->applicationInfo;
         $salary_cards     = $application->salaryCards;
         $tax_info         = $application->tax;
+        $average_salary   = $tax_info->details->groupBy('company_tin')->map(function ($company){
+            foreach ($company as $detail){
+               if(in_array($detail->year, get_tax_periods('year')) && in_array($detail->period, get_tax_periods('month'))){
+                   $detail->setAttribute('salary_cash', ($detail->salary - $detail->salary_tax_sum));
+               }
+            }
+            return $company->slice(-6, 6)->avg('salary_cash');
+        });
+//        dd($average_salary);
         $asoki_client     = $application->asokiClient;
+//        dd($asoki_client->info->info);
         return view('admin.clients.show', compact(
             'client',
             'application',

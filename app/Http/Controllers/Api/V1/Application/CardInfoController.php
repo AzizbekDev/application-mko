@@ -43,6 +43,7 @@ class CardInfoController extends Controller
                 'expire'        => $request->card_expire,
                 'phone'         => $request->phone
             ]);
+//            dd($this->credit_report($app_info->asokiClient->id));
             // Tax Get Info & Tax Scoring
             if($app_info->status_id == 5 || $app_info->status_id == 2 || $app_info->status_id == 6){
                 $salary_info = $this->getTaxSalaryInfo($app_info->id);
@@ -50,6 +51,7 @@ class CardInfoController extends Controller
                 if($salary_info && $salary_info['success'] == true){
                     $average_salary = intval($salary_info['average_salary']);
                     if($average_salary != 0 && $average_salary >= 2000000){
+                        $this->credit_report($app_info->asokiClient->id);
                         $limit = $this->get_limit($average_salary, $app_info->applicationInfo->birth_date);
                         $scoring_info = [
                             'limit'          => $limit,

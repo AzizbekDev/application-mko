@@ -12,7 +12,6 @@ class AsokiClient extends Model
         return $this->hasOne(AsokiInfo::class);
     }
 
-
     public function getFullNameAttribute()
     {
         return $this->family_name .' '.$this->name.' '.$this->patronymic;
