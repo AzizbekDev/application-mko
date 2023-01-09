@@ -1,4 +1,9 @@
 @extends('layouts.admin')
+@section('styles')
+<style>
+</style>
+@parent
+@endsection
 @section('content')
 <section class="content-header">
     <div class="container-fluid">
@@ -475,6 +480,17 @@
 @section('scripts')
 @parent
 <script>
+
+    function printModel(attribute){
+        var title   = $(attribute).find('.modal-header').children('h6').html();
+        var printContents = $(attribute).find('.modal-body').html();
+        var originalContents = document.body.innerHTML;
+        document.body.innerHTML = title + printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+        setTimeout(function() { location.reload();}, 1000);
+    }
+
     function openWallet(client_id){
         $.ajax({
             url: '/admin/client/wallet-create',

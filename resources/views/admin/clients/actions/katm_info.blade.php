@@ -1,15 +1,15 @@
 @if (!is_null($info->info) && !is_null($info->info->info))
     @php $data = json_decode($info->info->info, true) @endphp
     <div class="modal fade" id="modal_katm_{{ $info->id }}" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
+        <div class="modal-dialog modal-dialog-centered modal-lg test" role="document">
+            <div class="modal-content" id="katm">
                 <div class="modal-header">
                     <h6 class="modal-title text-bold ml-auto">"КРЕДИТ-АХБОРОТ ТАХЛИЛИЙ МАРКАЗИ" КРЕДИТ БЮРОСИ</h6>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="printThis">
                     <div class="row">
                         <table class="table table-bordered table-sm">
                         <caption style="caption-side:top;text-align:center;padding:0;">
@@ -110,7 +110,7 @@
                             <caption style="caption-side: top;text-align: center;padding: 0;">
                                 <p class="text-info">ПРОСРОЧЕННЫЕ ПЛАТЕЖИ ПО ССУДНЫМ СЧЕТАМ</p>
                             </caption>
-                            @if (array_key_exists('overdue_payments', $data))
+                            @if (array_key_exists('overdue_payments', $data['report']))
                                 <thead>
                                 <tr>
                                     <th scope="col">Месяц/год</th>
@@ -122,41 +122,39 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @if (array_key_exists('overdue_contract', $data->overdue_payments))
-                                    @php if (!empty($data['report']['overdue_payments'])) {
-                                                if (is_object($data->overdue_payments->overdue_contract)) {
-                                                    $overdue_contracts[] = $data->overdue_payments->overdue_contract;
-                                                } else {
-                                                    $overdue_contracts = $data->overdue_payments->overdue_contract;
-                                                }
-                                            }
-                                    @endphp
-                                    @foreach ($overdue_contracts as $overdue)
+                                @if (array_key_exists('overdue_contract', $data['report']['overdue_payments']) && $data['report']['overdue_payments']['overdues_exist'])
+                                    @foreach ($data['report']['overdue_payments']['overdue_contract'] as $overdue)
                                         <tr class="text-center table-info">
                                             <th scope="row" colspan=6 class="text-orange text-center">
-                                                {{ 'Наличие сведений кредитной организации о кредитном договоре №: ' . $overdue->id_contract }}
+                                                {{ 'Наличие сведений кредитной организации о кредитном договоре №: ' . $overdue['id_contract'] }}
                                             </th>
                                         </tr>
-                                        @foreach ($overdue->overdue as $item)
-                                            <tr>
-                                                <th scope="row">{{ $item->month ?? '-' }}</th>
-                                                <th scope="row">{{ $item->begin_sum ?? '0' }}</th>
-                                                <th scope="row">{{ $item->overdue_sum ?? '0' }}</th>
-                                                <th scope="row">{{ $item->total_overdue ?? '0' }}</th>
-                                                <th scope="row">{{ $item->end_sum ?? '0' }}</th>
-                                                <th scope="row">{{ $item->overdue_percent ?? '0' }}</th>
+                                        @foreach ($overdue['overdue'] as $item)
+                                            <tr class="@if($item['overdue_percent'] > 0) text-danger @endif">
+                                                <th scope="row">{{ $item['month'] ?? '-' }}</th>
+                                                <th scope="row">{{ $item['begin_sum'] ?? '0' }}</th>
+                                                <th scope="row">{{ $item['overdue_sum'] ?? '0' }}</th>
+                                                <th scope="row">{{ $item['total_overdue'] ?? '0' }}</th>
+                                                <th scope="row">{{ $item['end_sum'] ?? '0' }}</th>
+                                                <th scope="row">{{ $item['overdue_percent'] ?? '0' }}</th>
                                             </tr>
                                         @endforeach
                                     @endforeach
+                                @else
+                                    <hr><p class="text-center">No data</p><hr>
                                 @endif
                                 </tbody>
                             @endif
                         </table>
                     </div>
+                    <div class="row text-info">
+                        <div class="col">@lang('print.cred_nagruzka')</div>
+                        <div class="col">{{ price_format($data['report']['cred_nagruzka']).' СУМ' }} / Месяц</div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                    <button id="btnPrint" type="button" class="btn btn-default">Print</button>
+                    <button onclick="printModel('#katm')" type="button" class="btn btn-default">Print</button>
                 </div>
             </div>
         </div>

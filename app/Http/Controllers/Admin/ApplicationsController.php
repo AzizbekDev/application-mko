@@ -17,10 +17,10 @@ class ApplicationsController extends Controller
     public function index(Request $request)
     {
 //        abort_if(Gate::denies('all_application_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $applications = Client::load([
+        $applications = Client::with([
             'application',
             'application.applicationInfo',
-            'application.partnerInfo'])->get();
+            'application.partnerInfo'])->orderBy('id','DESC')->get();
         return view('admin.applications.index', compact('applications'));
     }
 

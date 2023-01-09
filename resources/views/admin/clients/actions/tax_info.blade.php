@@ -1,9 +1,9 @@
 @if(!is_null($tax_info))
 <div class="modal fade" id="modal_tax_{{$tax_info->id}}" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content" id="tax">
             <div class="modal-header">
-                <h6 class="modal-title">Больше информации</h6>
+                <h6 class="modal-title">Налоговая информация</h6>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -12,7 +12,7 @@
                 @if(!is_null($tax_info->details))
                     @foreach($tax_info->details->groupBy('company_tin') as $details)
                     <table class="table">
-                        <caption style="caption-side: top;">
+                        <caption style="caption-side: top; text-align: center;">
                             <span class="text-info">{{ $details->first()->company_name }}&nbsp;</span>
                             <span class="text-muted">ИНН: {{ $details->first()->company_tin }}</span>
                         </caption>
@@ -47,6 +47,10 @@
                         <p>Info details is empty</p>
                     </div>
                 @endif
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                <button onclick="printModel('#tax')" type="button" class="btn btn-default">Print</button>
             </div>
         </div>
     </div>
