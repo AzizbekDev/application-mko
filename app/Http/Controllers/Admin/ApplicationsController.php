@@ -20,7 +20,7 @@ class ApplicationsController extends Controller
         $applications = Client::with([
             'application',
             'application.applicationInfo',
-            'application.partnerInfo'])->orderBy('id','DESC')->get();
+            'application.partnerInfo'])->where('status_id', '<=', 3)->orderBy('id','DESC')->get();
         return view('admin.applications.index', compact('applications'));
     }
 

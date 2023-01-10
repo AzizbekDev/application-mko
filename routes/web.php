@@ -28,7 +28,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Pages
     Route::get('search', 'SearchController@index');
-    Route::post('search', 'SearchController@show')->name('application.search');
+    Route::post('search', 'SearchController@search')->name('application.search');
     Route::get('reports', 'ReportsController@index')->name('application.reports');
 
     // Brands
