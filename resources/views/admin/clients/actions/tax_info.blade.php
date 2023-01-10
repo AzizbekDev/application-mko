@@ -9,6 +9,27 @@
                 </button>
             </div>
             <div class="modal-body">
+                <table class="table">
+                    <caption style="caption-side: top; text-align: center;">
+                        <span class="text-info">Общая информация</span>
+                    </caption>
+                    <thead>
+                    <tr>
+                        <th>№ Заявка</th>
+                        <th>Серийный Номер</th>
+                        <th>Пинфл</th>
+                        <th>ИНН</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ $tax_info->application_id }}</td>
+                        <td>{{ $tax_info->serial_number }}</td>
+                        <td>{{ $tax_info->pinfl }}</td>
+                        <td>{{ $tax_info->tin }}</td>
+                    </tr>
+                    </tbody>
+                </table>
                 @if(!is_null($tax_info->details))
                     @foreach($tax_info->details->groupBy('company_tin') as $details)
                     <table class="table">
@@ -18,7 +39,7 @@
                         </caption>
                         <thead>
                         <tr>
-                            <th width="10px;">#</th>
+                            <th width="10px;">№</th>
                             <th>Год</th>
                             <th>Месяц</th>
                             <th>Зарплата</th>
@@ -44,7 +65,7 @@
                     @endforeach
                 @else
                     <div class="row text-center">
-                        <p>Info details is empty</p>
+                        <p>Информационные данные пусты</p>
                     </div>
                 @endif
             </div>

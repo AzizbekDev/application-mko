@@ -56,6 +56,7 @@ class KatmService
             "security"      => $this->security,
             "data"          => $data
         ]);
+        dd($this->reportUrl, json_decode($json));
         $result = $this->sendRequest($this->reportUrl, $json);
         return $result;
     }
@@ -73,6 +74,7 @@ class KatmService
             "security"      => $this->security,
             "data"          => $data
         ]);
+
         $result = $this->sendRequest($this->reportStatusUrl, $json);
         return $result;
     }

@@ -8,11 +8,12 @@ use App\Http\Traits\ValidateMethod;
 use App\Http\Controllers\Controller;
 use App\Models\Application as ApplicationModel;
 use App\Traits\Personal\KatmInfo;
+use App\Traits\Scoring\LimitScoring;
 use Carbon\Carbon;
 
 class ConfirmLimitController extends Controller
 {
-    use ValidateMethod, KatmInfo;
+    use ValidateMethod, KatmInfo, LimitScoring;
     private $application;
 
     public function __construct(ApplicationModel $model)
@@ -25,13 +26,14 @@ class ConfirmLimitController extends Controller
         $validator = $this->validate_method($request, __FUNCTION__);
         if ($validator->fails()) return $this->responseError('10422', $validator->messages());
         $app_info = $this->application->whereKeyApp($request->key_app)->first();
-        $this->credit_report_status($app_info->asokiClient->id);
+//        $this->credit_report_status($app_info->asokiClient->id);
         if($app_info->step == 4 && $app_info->status_id == 11) return $this->responseSuccess('10000', get_code_message('10000'));
         if($request->confirm){
+            $limit = $this->get_limit($app_info->tax->average_salary, $app_info->applicationInfo->birth_date);
             $clientInfo = [
                 "password"     => Str::random(5),
                 "date_pub"     => Carbon::now(),
-                "client_limit" => 10000000
+                "client_limit" => $limit
             ];
             // Credit Report Status send request
             $app_info->client()->updateOrCreate($clientInfo);

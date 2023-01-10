@@ -79,7 +79,7 @@
                                                                    <form action="{{ route('admin.clients.status.change') }}" method="post"> @csrf
                                                                        <div class="modal-body">
                                                                            <div class="form-group">
-                                                                               <label for="clientId">Client ID</label>
+                                                                               <label for="clientId">ID клиента</label>
                                                                                <input type="text" name="client_id" class="form-control" id="clientId" readonly value="{{ $client->id }}">
                                                                            </div>
                                                                            <div class="form-group">
@@ -115,31 +115,35 @@
                                                <table class="table table-hover">
                                                    <tbody>
                                                    <tr>
-                                                       <td><strong>Client ID</strong></td>
+                                                       <td><strong>ID клиента</strong></td>
                                                        <td>{{ $client->id }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Application Status</strong></td>
+                                                       <td><strong>Статус заявка</strong></td>
                                                        <td>{{ $client->status_app_name }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Client Status</strong></td>
+                                                       <td><strong>Статус клиента</strong></td>
                                                        <td>{{ $client->status_name }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Client Code</strong></td>
-                                                       <td>{{ $client->client_code ?? 'Null' }}</td>
+                                                       <td><strong>Код (clientCode)</strong></td>
+                                                       <td>{{ $client->client_code ?? 'Не открыл' }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Client Password</strong></td>
+                                                       <td><strong>Лимит</strong></td>
+                                                       <td>{{ price_format($client->client_limit) }}&nbsp;UZS</td>
+                                                   </tr>
+                                                   <tr>
+                                                       <td><strong>Пароль</strong></td>
                                                        <td>{{ $client->password }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Client Lang</strong></td>
+                                                       <td><strong>Язык</strong></td>
                                                        <td>{{ $client->lang }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Client Created</strong></td>
+                                                       <td><strong>Создан</strong></td>
                                                        <td>{{ $client->date_pub }}</td>
                                                    </tr>
                                                    </tbody>
@@ -152,39 +156,39 @@
                                                <table class="table table-hover">
                                                    <tbody>
                                                    <tr>
-                                                       <td><strong>Application ID</strong></td>
+                                                       <td><strong>ID заявка</strong></td>
                                                        <td>{{ $application->id }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Key APP</strong></td>
+                                                       <td><strong>Уникальный ключ (key_app)</strong></td>
                                                        <td>{{ $application->key_app }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Serial Number</strong></td>
+                                                       <td><strong>Серийный номер</strong></td>
                                                        <td>{{ $application->serial_number }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Pinfl</strong></td>
+                                                       <td><strong>Пинфл</strong></td>
                                                        <td>{{ $application->pin }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Card Number</strong></td>
+                                                       <td><strong>Номер карты</strong></td>
                                                        <td>{{ $application->card_mask }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Phone</strong></td>
+                                                       <td><strong>Телефон</strong></td>
                                                        <td>{{ $application->phone }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Identified</strong></td>
+                                                       <td><strong>Идентифицировано</strong></td>
                                                        <td>{{ $application->is_identified ? 'Identified' : 'Not Identified' }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Created At</strong></td>
+                                                       <td><strong>Создан</strong></td>
                                                        <td>{{ $application->created_at }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Updated At</strong></td>
+                                                       <td><strong>Обновлено</strong></td>
                                                        <td>{{ $application->updated_at }}</td>
                                                    </tr>
                                                    </tbody>
@@ -197,59 +201,59 @@
                                                <table class="table table-hover">
                                                    <tbody>
                                                    <tr>
-                                                       <td><strong>Full Name</strong></td>
+                                                       <td><strong>ФИО</strong></td>
                                                        <td>{{ $application_info->fio }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Serial Number</strong></td>
+                                                       <td><strong>Серийный номер</strong></td>
                                                        <td>{{ $application_info->serial_number }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Pinfl</strong></td>
+                                                       <td><strong>Пинфл</strong></td>
                                                        <td>{{ $application_info->pin }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Inn</strong></td>
+                                                       <td><strong>ИНН</strong></td>
                                                        <td>{{ $application_info->inn }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Birth Date</strong></td>
+                                                       <td><strong>Дата рождения</strong></td>
                                                        <td>{{ $application_info->birth_date }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Gender</strong></td>
+                                                       <td><strong>Пол</strong></td>
                                                        <td>{{ $application_info->gender ? 'Male' : 'Female' }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Telegram</strong></td>
+                                                       <td><strong>Телеграм</strong></td>
                                                        <td>{{ $application_info->telegram }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Work Address</strong></td>
+                                                       <td><strong>Рабочий адрес</strong></td>
                                                        <td>{{ $application_info->work_address ?? 'Not Filled' }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Work Phone</strong></td>
+                                                       <td><strong>Рабочий телефон</strong></td>
                                                        <td>{{ $application_info->work_phone ?? 'Not Filled' }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Work Title</strong></td>
+                                                       <td><strong>Название работы</strong></td>
                                                        <td>{{ $application_info->work_title ?? 'Not Filled' }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Work Place</strong></td>
+                                                       <td><strong>Рабочее место</strong></td>
                                                        <td>{{ $application_info->work_place ?? 'Not Filled' }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Profession</strong></td>
+                                                       <td><strong>Профессия</strong></td>
                                                        <td>{{ $application_info->profession ?? 'Not Filled' }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Created At</strong></td>
+                                                       <td><strong>Создан</strong></td>
                                                        <td>{{ $application_info->created_at }}</td>
                                                    </tr>
                                                    <tr>
-                                                       <td><strong>Updated At</strong></td>
+                                                       <td><strong>Обновлено</strong></td>
                                                        <td>{{ $application_info->updated_at }}</td>
                                                    </tr>
                                                    </tbody>
@@ -263,31 +267,31 @@
                                                 <table class="table table-hover">
                                                        <tbody>
                                                        <tr>
-                                                           <td><strong>Owner</strong></td>
+                                                           <td><strong>ФИО</strong></td>
                                                            <td>{{ $wallet->owner }}</td>
                                                        </tr>
                                                        <tr>
-                                                           <td><strong>Wallet Card Number</strong></td>
+                                                           <td><strong>Номер карты кошелька</strong></td>
                                                            <td>{{ $wallet->card_number }}</td>
                                                        </tr>
                                                        <tr>
-                                                           <td><strong>Wallet SMS Phone</strong></td>
+                                                           <td><strong>SMS Телефон</strong></td>
                                                            <td>{{ $wallet->phone }}</td>
                                                        </tr>
                                                        <tr>
-                                                           <td><strong>Wallet Token</strong></td>
+                                                           <td><strong>Токен кошелька</strong></td>
                                                            <td>{{ $wallet->token }}</td>
                                                        </tr>
                                                        <tr>
-                                                           <td><strong>Wallet Status</strong></td>
+                                                           <td><strong>Состояние кошелька</strong></td>
                                                            <td>{{ $wallet->status ? 'Active' : 'Inactive' }}</td>
                                                        </tr>
                                                        <tr>
-                                                           <td><strong>Balance</strong></td>
+                                                               <td><strong>Баланс</strong></td>
                                                            <td>{{ $wallet->balance }}</td>
                                                        </tr>
                                                        <tr>
-                                                           <td><strong>Created At</strong></td>
+                                                           <td><strong>Создан</strong></td>
                                                            <td>{{ $wallet->created_at }}</td>
                                                        </tr>
                                                        </tbody>
@@ -417,7 +421,7 @@
                                </td>
                            </tr>
                            @else
-                               <p>Tax Info Not Found</p>
+                               <p>Налоговая информация не найдена</p>
                            @endif
                            </tbody>
                        </table>

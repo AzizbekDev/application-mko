@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'site_title' => 'Unired Dashboard',
+    'site_title' => 'UNIRED & MKO',
 ];

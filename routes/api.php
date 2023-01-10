@@ -29,3 +29,10 @@ Route::group([
     'middleware' => ['auth.partner']], function () {
     Route::post('tax', 'TaxController@index');
 });
+
+// Katm Services
+Route::group([
+    'namespace'  => 'Api\V1\Unired',
+    'middleware' => ['auth.partner']], function () {
+    Route::post('credit', 'KatmController@index');
+});

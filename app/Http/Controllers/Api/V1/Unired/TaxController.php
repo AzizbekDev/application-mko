@@ -19,6 +19,7 @@ class TaxController extends Controller
             'pin'           => 'nullable|size:14',
         ]);
         if ($v->fails()) return $this->responseError('30110',$v->errors()->all());
+        dd($request->all());
         return $this->getTaxSalaryInfo($request->all());
     }
 
@@ -29,7 +30,7 @@ class TaxController extends Controller
             'pin'           => 'nullable|size:14',
         ]);
         if ($v->fails()) return $this->responseError('30110',$v->errors()->all());
-        dd('scoring not implemented yet');
+        dd($request->all());
     }
 
 }

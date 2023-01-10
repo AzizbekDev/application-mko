@@ -34,7 +34,7 @@
                                 </tbody>
 
                             @else
-                                <hr><p class="text-center">No data</p><hr>
+                                <hr><p class="text-center">Нет данных</p><hr>
                             @endif
                         </table>
                     </div>
@@ -141,7 +141,7 @@
                                         @endforeach
                                     @endforeach
                                 @else
-                                    <hr><p class="text-center">No data</p><hr>
+                                    <hr><p class="text-center">Нет данных</p><hr>
                                 @endif
                                 </tbody>
                             @endif
